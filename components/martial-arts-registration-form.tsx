@@ -124,11 +124,12 @@ export function MartialArtsRegistrationForm() {
         alert(`✅ Registro exitoso! Se guardaron ${values.participants.length} participante(s).`);
         form.reset(); // Opcional: limpiar el formulario después del envío exitoso
       } else {
-        throw new Error('Error al enviar los datos');
+        console.error('Error en la respuesta del servidor:', response.status, response.statusText, await response.text());
+        throw new Error(`Error al enviar los datos: ${response.status} ${response.statusText}`);
       }
     } catch (error) {
       console.error('Error al enviar el formulario:', error);
-      alert('❌ Error al enviar el formulario. Intenta nuevamente.');
+      alert('❌ Error al enviar el formulario. Intenta nuevamente. Consulta la consola para más detalles.');
     }
   }
 

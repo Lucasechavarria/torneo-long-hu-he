@@ -8,8 +8,10 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { AdvancedCountdown } from "./advanced-countdown"
 import { Separator } from "@/components/ui/separator"
 import { useRouter } from 'next/navigation';
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export function TournamentHero() {
+  const isMobile = useIsMobile()
   const [isVisible, setIsVisible] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
@@ -32,6 +34,8 @@ export function TournamentHero() {
     setIsVisible(true)
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (isMobile) return
+
       // For background particles
       setMousePosition({ x: e.clientX, y: e.clientY })
 
@@ -46,7 +50,7 @@ export function TournamentHero() {
 
     window.addEventListener("mousemove", handleMouseMove)
     return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [mouseX, mouseY])
+  }, [mouseX, mouseY, isMobile])
 
   const router = useRouter();
 
@@ -109,11 +113,11 @@ export function TournamentHero() {
         <motion.div
           ref={logoRef}
           className="relative z-10"
-          style={{ rotateX, rotateY }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          drag
-          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+          style={!isMobile ? { rotateX, rotateY } : {}}
+          whileHover={!isMobile ? { scale: 1.05 } : {}}
+          whileTap={!isMobile ? { scale: 0.95 } : {}}
+          drag={!isMobile}
+          dragConstraints={!isMobile ? { left: 0, right: 0, top: 0, bottom: 0 } : false}
           dragElastic={0.2}
         >
           <div className="relative w-full max-w-md h-auto mx-auto"> {/* Added a wrapper div for responsive sizing */}
