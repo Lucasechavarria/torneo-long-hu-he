@@ -60,7 +60,7 @@ export function TournamentHero() {
 
   return (
     <>
-      <section className="relative h-screen pt-40 pb-10 flex flex-col justify-center items-center text-center paint-splash overflow-hidden [perspective:1000px]">
+      <section className="relative min-h-screen pt-40 pb-10 flex flex-col justify-center items-center text-center paint-splash [perspective:1000px]">
         <motion.div className="absolute inset-0 overflow-hidden">
           <div
             className="absolute top-[10%] left-[10%] w-40 h-40 rounded-full bg-primary/15 blur-2xl float-animation-slow"
