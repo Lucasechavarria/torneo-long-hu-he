@@ -30,6 +30,11 @@ const marshalTheDead = localFont({
   variable: "--font-marshal-the-dead",
 })
 
+const theUltraBrush = localFont({
+  src: "../public/fonts/the-ultra-brush/Ultra Brush Demo.ttf",
+  variable: "--font-the-ultra-brush",
+})
+
 export const metadata: Metadata = {
   title: "Torneo Abierto de Artes Marciales 2025 | Asociacion Long Hu He",
   description:
@@ -48,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${workSans.variable} ${openSans.variable} ${yujiBoku.variable} ${marshalTheDead.variable}`}
+        className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${workSans.variable} ${openSans.variable} ${yujiBoku.variable} ${marshalTheDead.variable} ${theUltraBrush.variable}`}
       >
         <ClientLayout>{children}</ClientLayout>
       </body>

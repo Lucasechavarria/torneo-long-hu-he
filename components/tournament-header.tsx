@@ -26,23 +26,24 @@ export function TournamentHeader() {
         isScrolled ? "bg-background/95 backdrop-blur-sm shadow-lg" : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto flex justify-between items-center py-4 px-6">
-        <div className="flex items-center space-x-4">
+      <div className="container mx-auto flex flex-col md:flex-row md:justify-between items-center py-1">
+        <div className="flex items-center space-x-2 mb-2 md:mb-0"> {/* Added margin-bottom for spacing when stacked */}
           <Image
             src="/Logo-dorado.webp"
             alt="Logo de la Asociacion Long Hu He"
-            width={64}
-            height={64}
-            className="rounded-full"
+            width={40}
+            height={40}
+            className="rounded-full w-10 h-10 md:w-16 md:h-16" // Responsive image size
           />
           <Image
             src="/logo-dorado.png"
             alt="Asociacion Long Hu He"
-            width={200}
-            height={50}
+            width={120}
+            height={30}
+            className="h-auto" // Responsive image size
           />
         </div>
-        <motion.div className="relative"> {/* Added relative positioning for glow */}
+        <motion.div className="relative hidden sm:block"> {/* Added relative positioning for glow and hidden on small screens */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -58,7 +59,7 @@ export function TournamentHeader() {
           >
             <Button
               onClick={scrollToRegistration}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-5 text-xl font-semibold glow-border shadow-xl" // Increased height
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-base md:px-10 md:py-5 md:text-xl font-semibold glow-border shadow-xl" // Responsive padding and font size
             >
               Inscribirme
             </Button>

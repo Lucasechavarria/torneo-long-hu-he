@@ -285,7 +285,7 @@ export function MartialArtsRegistrationForm() {
                     control={form.control}
                     name={`participants.${index}.grade`}
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormItem className="flex flex-col items-start space-y-2 rounded-md border p-4">
                         <div className="space-y-1 leading-none">
                           <FormLabel>Grado</FormLabel>
                           <FormDescription>
@@ -296,7 +296,7 @@ export function MartialArtsRegistrationForm() {
                           <RadioGroup
                             onValueChange={field.onChange}
                             defaultValue={field.value}
-                            className="flex flex-col space-y-1 md:flex-row md:space-x-4 md:space-y-0"
+                            className="flex flex-col space-y-2"
                           >
                             {['Kyu A', 'Kyu B', 'Dan'].map(grade => (
                               <FormItem key={grade} className="flex items-center space-x-3 space-y-0">
@@ -317,7 +317,7 @@ export function MartialArtsRegistrationForm() {
                     control={form.control}
                     name={`participants.${index}.category`}
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormItem className="flex flex-col items-start space-y-2 rounded-md border p-4">
                         <div className="space-y-1 leading-none">
                           <FormLabel>Categoría</FormLabel>
                           <FormDescription>
@@ -330,26 +330,14 @@ export function MartialArtsRegistrationForm() {
                             defaultValue={field.value}
                             className="flex flex-col space-y-2"
                           >
-                            <div className="flex flex-row space-x-4">
-                              {['Infantil', 'Juvenil'].map(category => (
-                                <FormItem key={category} className="flex items-center space-x-3">
-                                  <FormControl>
-                                    <RadioGroupItem value={category} />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">{category}</FormLabel>
-                                </FormItem>
-                              ))}
-                            </div>
-                            <div className="flex flex-row space-x-4">
-                              {['Adulto', 'Senior'].map(category => (
-                                <FormItem key={category} className="flex items-center space-x-3">
-                                  <FormControl>
-                                    <RadioGroupItem value={category} />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">{category}</FormLabel>
-                                </FormItem>
-                              ))}
-                            </div>
+                            {['Infantil', 'Juvenil', 'Adulto', 'Senior'].map(category => (
+                              <FormItem key={category} className="flex items-center space-x-3">
+                                <FormControl>
+                                  <RadioGroupItem value={category} />
+                                </FormControl>
+                                <FormLabel className="font-normal">{category}</FormLabel>
+                              </FormItem>
+                            ))}
                           </RadioGroup>
                         </FormControl>
                         <FormMessage />
@@ -387,7 +375,7 @@ export function MartialArtsRegistrationForm() {
                     control={form.control}
                     name={`participants.${index}.forms`}
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormItem className="flex flex-col items-start space-y-2 rounded-md border p-4">
                         <div className="space-y-1 leading-none">
                           <FormLabel>Formas</FormLabel>
                           <FormDescription>
@@ -398,38 +386,16 @@ export function MartialArtsRegistrationForm() {
                           <RadioGroup
                             onValueChange={field.onChange}
                             defaultValue={field.value}
-                            className="flex flex-col space-y-2" // Cambiado a flex-col para apilar verticalmente
+                            className="flex flex-col space-y-2"
                           >
-                            <div className="flex flex-row space-x-4"> {/* Primera línea */}
-                              {['Interna', 'Chinas'].map(formOption => (
-                                <FormItem key={formOption} className="flex items-center space-x-3">
-                                  <FormControl>
-                                    <RadioGroupItem value={formOption} />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">{formOption}</FormLabel>
-                                </FormItem>
-                              ))}
-                            </div>
-                            <div className="flex flex-row space-x-4"> {/* Segunda línea */}
-                              {['Japonesas', 'Coreanas'].map(formOption => (
-                                <FormItem key={formOption} className="flex items-center space-x-3">
-                                  <FormControl>
-                                    <RadioGroupItem value={formOption} />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">{formOption}</FormLabel>
-                                </FormItem>
-                              ))}
-                            </div>
-                            <div className="flex flex-row space-x-4"> {/* Tercera línea */}
-                              {['Modernas'].map(formOption => (
-                                <FormItem key={formOption} className="flex items-center space-x-3">
-                                  <FormControl>
-                                    <RadioGroupItem value={formOption} />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">{formOption}</FormLabel>
-                                </FormItem>
-                              ))}
-                            </div>
+                            {['Interna', 'Chinas', 'Japonesas', 'Coreanas', 'Modernas'].map(formOption => (
+                              <FormItem key={formOption} className="flex items-center space-x-3">
+                                <FormControl>
+                                  <RadioGroupItem value={formOption} />
+                                </FormControl>
+                                <FormLabel className="font-normal">{formOption}</FormLabel>
+                              </FormItem>
+                            ))}
                           </RadioGroup>
                         </FormControl>
                         <FormMessage />
@@ -442,84 +408,47 @@ export function MartialArtsRegistrationForm() {
                     control={form.control}
                     name={`participants.${index}.combat`}
                     render={() => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormItem className="flex flex-col items-start space-y-2 rounded-md border p-4">
                         <div className="space-y-1 leading-none">
                           <FormLabel>Combate</FormLabel>
                           <FormDescription>
                             Selecciona las modalidades de combate en las que participará el competidor.
                           </FormDescription>
                         </div>
-                        <div className="flex flex-col space-y-4 mt-4"> {/* Cambiado a flex-col para apilar verticalmente, aumentado space-y */}
-                          <div className="flex flex-row space-x-4"> {/* Primera línea de combate */}
-                            {['Individual', 'Por Equipo'].map(combatOption => (
-                              <FormField
-                                key={combatOption}
-                                control={form.control}
-                                name={`participants.${index}.combat`}
-                                render={({ field }) => {
-                                  return (
-                                    <FormItem
-                                      key={combatOption}
-                                      className="flex items-center space-x-2"
-                                    >
-                                      <FormControl>
-                                        <Checkbox
-                                          checked={field.value?.includes(combatOption)}
-                                          onCheckedChange={(checked) => {
-                                            return checked
-                                              ? field.onChange([...(field.value || []), combatOption])
-                                              : field.onChange(
-                                                  field.value?.filter(
-                                                    (value) => value !== combatOption
-                                                  )
-                                                );
-                                          }}
-                                        />
-                                      </FormControl>
-                                      <FormLabel className="font-normal text-sm">
-                                        {combatOption}
-                                      </FormLabel>
-                                    </FormItem>
-                                  );
-                                }}
-                              />
-                            ))}
-                          </div>
-                          <div className="flex flex-row space-x-4"> {/* Segunda línea de combate */}
-                            {['Kickboxing', 'Light Contact'].map(combatOption => (
-                              <FormField
-                                key={combatOption}
-                                control={form.control}
-                                name={`participants.${index}.combat`}
-                                render={({ field }) => {
-                                  return (
-                                    <FormItem
-                                      key={combatOption}
-                                      className="flex items-center space-x-2"
-                                    >
-                                      <FormControl>
-                                        <Checkbox
-                                          checked={field.value?.includes(combatOption)}
-                                          onCheckedChange={(checked) => {
-                                            return checked
-                                              ? field.onChange([...(field.value || []), combatOption])
-                                              : field.onChange(
-                                                  field.value?.filter(
-                                                    (value) => value !== combatOption
-                                                  )
-                                                );
-                                          }}
-                                        />
-                                      </FormControl>
-                                      <FormLabel className="font-normal text-sm">
-                                        {combatOption}
-                                      </FormLabel>
-                                    </FormItem>
-                                  );
-                                }}
-                              />
-                            ))}
-                          </div>
+                        <div className="flex flex-col space-y-2 mt-4">
+                          {['Individual', 'Por Equipo', 'Kickboxing', 'Light Contact'].map(combatOption => (
+                            <FormField
+                              key={combatOption}
+                              control={form.control}
+                              name={`participants.${index}.combat`}
+                              render={({ field }) => {
+                                return (
+                                  <FormItem
+                                    key={combatOption}
+                                    className="flex items-center space-x-2"
+                                  >
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value?.includes(combatOption)}
+                                        onCheckedChange={(checked) => {
+                                          return checked
+                                            ? field.onChange([...(field.value || []), combatOption])
+                                            : field.onChange(
+                                                field.value?.filter(
+                                                  (value) => value !== combatOption
+                                                )
+                                              );
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal text-sm">
+                                      {combatOption}
+                                    </FormLabel>
+                                  </FormItem>
+                                );
+                              }}
+                            />
+                          ))}
                         </div>
                         <FormMessage />
                       </FormItem>
@@ -531,84 +460,47 @@ export function MartialArtsRegistrationForm() {
                     control={form.control}
                     name={`participants.${index}.weapons`}
                     render={() => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormItem className="flex flex-col items-start space-y-2 rounded-md border p-4">
                         <div className="space-y-1 leading-none">
                           <FormLabel>Formas con Armas</FormLabel>
                           <FormDescription>
                             Selecciona las categorías de formas con armas en las que participará el competidor.
                           </FormDescription>
                         </div>
-                        <div className="flex flex-col space-y-2 mt-4"> {/* Cambiado a flex-col para apilar verticalmente */}
-                          <div className="flex flex-row space-x-4"> {/* Primera línea */}
-                            {['Armas Cortas', 'Armas Largas'].map(weaponOption => (
-                              <FormField
-                                key={weaponOption}
-                                control={form.control}
-                                name={`participants.${index}.weapons`}
-                                render={({ field }) => {
-                                  return (
-                                    <FormItem
-                                      key={weaponOption}
-                                      className="flex items-center space-x-3"
-                                    >
-                                      <FormControl>
-                                        <Checkbox
-                                          checked={field.value?.includes(weaponOption)}
-                                          onCheckedChange={(checked) => {
-                                            return checked
-                                              ? field.onChange([...(field.value || []), weaponOption])
-                                              : field.onChange(
-                                                  field.value?.filter(
-                                                    (value) => value !== weaponOption
-                                                  )
-                                                );
-                                          }}
-                                        />
-                                      </FormControl>
-                                      <FormLabel className="font-normal">
-                                        {weaponOption}
-                                      </FormLabel>
-                                    </FormItem>
-                                  );
-                                }}
-                              />
-                            ))}
-                          </div>
-                          <div className="flex flex-row space-x-4 mt-4"> {/* Segunda línea, añadido mt-4 para separación */}
-                            {['Armas Especiales'].map(weaponOption => (
-                              <FormField
-                                key={weaponOption}
-                                control={form.control}
-                                name={`participants.${index}.weapons`}
-                                render={({ field }) => {
-                                  return (
-                                    <FormItem
-                                      key={weaponOption}
-                                      className="flex items-center space-x-3"
-                                    >
-                                      <FormControl>
-                                        <Checkbox
-                                          checked={field.value?.includes(weaponOption)}
-                                          onCheckedChange={(checked) => {
-                                            return checked
-                                              ? field.onChange([...(field.value || []), weaponOption])
-                                              : field.onChange(
-                                                  field.value?.filter(
-                                                    (value) => value !== weaponOption
-                                                  )
-                                                );
-                                          }}
-                                        />
-                                      </FormControl>
-                                      <FormLabel className="font-normal">
-                                        {weaponOption}
-                                      </FormLabel>
-                                    </FormItem>
-                                  );
-                                }}
-                              />
-                            ))}
-                          </div>
+                        <div className="flex flex-col space-y-2 mt-4">
+                          {['Armas Cortas', 'Armas Largas', 'Armas Especiales'].map(weaponOption => (
+                            <FormField
+                              key={weaponOption}
+                              control={form.control}
+                              name={`participants.${index}.weapons`}
+                              render={({ field }) => {
+                                return (
+                                  <FormItem
+                                    key={weaponOption}
+                                    className="flex items-center space-x-3"
+                                  >
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value?.includes(weaponOption)}
+                                        onCheckedChange={(checked) => {
+                                          return checked
+                                            ? field.onChange([...(field.value || []), weaponOption])
+                                            : field.onChange(
+                                                field.value?.filter(
+                                                  (value) => value !== weaponOption
+                                                )
+                                              );
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">
+                                      {weaponOption}
+                                    </FormLabel>
+                                  </FormItem>
+                                );
+                              }}
+                            />
+                          ))}
                         </div>
                         <FormMessage />
                       </FormItem>

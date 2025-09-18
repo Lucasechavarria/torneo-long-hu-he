@@ -108,7 +108,7 @@ export function ImmersiveRegistrationWizard() {
         {steps.map((step, index) => (
           <div key={step.id} className="flex items-center">
             <motion.div
-              className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${
+              className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${ 
                 completedSteps.includes(step.id)
                   ? "bg-green-600 border-green-600 text-white"
                   : currentStep === step.id
@@ -160,6 +160,8 @@ export function ImmersiveRegistrationWizard() {
                   </Label>
                   <Input
                     id="nombre"
+                    name="nombre"
+                    autoComplete="given-name"
                     value={formData.personalInfo.nombre}
                     onChange={(e) =>
                       setFormData({
@@ -178,6 +180,8 @@ export function ImmersiveRegistrationWizard() {
                   </Label>
                   <Input
                     id="apellido"
+                    name="apellido"
+                    autoComplete="family-name"
                     value={formData.personalInfo.apellido}
                     onChange={(e) =>
                       setFormData({
@@ -196,7 +200,9 @@ export function ImmersiveRegistrationWizard() {
                   </Label>
                   <Input
                     id="edad"
+                    name="edad"
                     type="number"
+                    autoComplete="off"
                     value={formData.personalInfo.edad}
                     onChange={(e) =>
                       setFormData({
@@ -215,6 +221,8 @@ export function ImmersiveRegistrationWizard() {
                   </Label>
                   <Input
                     id="telefono"
+                    name="telefono"
+                    autoComplete="tel"
                     value={formData.personalInfo.telefono}
                     onChange={(e) =>
                       setFormData({
@@ -233,7 +241,9 @@ export function ImmersiveRegistrationWizard() {
                   </Label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
+                    autoComplete="email"
                     value={formData.personalInfo.email}
                     onChange={(e) =>
                       setFormData({
@@ -266,6 +276,8 @@ export function ImmersiveRegistrationWizard() {
                   </Label>
                   <Input
                     id="escuela"
+                    name="escuela"
+                    autoComplete="organization"
                     value={formData.competitionInfo.escuela}
                     onChange={(e) =>
                       setFormData({
@@ -279,7 +291,7 @@ export function ImmersiveRegistrationWizard() {
                 </div>
 
                 <div>
-                  <Label className="text-white">Categoría *</Label>
+                  <p className="text-sm font-medium leading-none text-white">Categoría *</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
                     {categories.map((category) => (
                       <motion.button
@@ -291,7 +303,7 @@ export function ImmersiveRegistrationWizard() {
                             competitionInfo: { ...formData.competitionInfo, categoria: category },
                           })
                         }
-                        className={`p-3 rounded-lg text-left transition-all ${
+                        className={`p-3 rounded-lg text-left transition-all ${ 
                           formData.competitionInfo.categoria === category
                             ? "bg-orange-600 text-white border-orange-500"
                             : "bg-gray-800 text-gray-300 border-gray-600 hover:bg-gray-700"
@@ -311,6 +323,8 @@ export function ImmersiveRegistrationWizard() {
                   </Label>
                   <Input
                     id="experiencia"
+                    name="experiencia"
+                    autoComplete="off"
                     value={formData.competitionInfo.experiencia}
                     onChange={(e) =>
                       setFormData({
@@ -343,6 +357,8 @@ export function ImmersiveRegistrationWizard() {
                   </Label>
                   <Input
                     id="emergency"
+                    name="emergency"
+                    autoComplete="off"
                     value={formData.additional.emergencyContact}
                     onChange={(e) =>
                       setFormData({
@@ -362,6 +378,8 @@ export function ImmersiveRegistrationWizard() {
                   </Label>
                   <Input
                     id="medical"
+                    name="medical"
+                    autoComplete="off"
                     value={formData.additional.medicalInfo}
                     onChange={(e) =>
                       setFormData({
@@ -378,6 +396,7 @@ export function ImmersiveRegistrationWizard() {
                   <input
                     type="checkbox"
                     id="agreement"
+                    name="agreement"
                     checked={formData.additional.agreement}
                     onChange={(e) =>
                       setFormData({

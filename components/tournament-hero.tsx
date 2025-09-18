@@ -60,7 +60,7 @@ export function TournamentHero() {
 
   return (
     <>
-      <section className="relative h-[70vh] flex flex-col justify-center items-center text-center paint-splash overflow-hidden [perspective:1000px]">
+      <section className="relative h-screen pt-40 pb-10 flex flex-col justify-center items-center text-center paint-splash overflow-hidden [perspective:1000px]">
         <motion.div className="absolute inset-0 overflow-hidden">
           <div
             className="absolute top-[10%] left-[10%] w-40 h-40 rounded-full bg-primary/15 blur-2xl float-animation-slow"
@@ -116,18 +116,20 @@ export function TournamentHero() {
           dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
           dragElastic={0.2}
         >
-          <Image
-            src="/Logo-dorado.webp"
-            alt="Logo de la Asociacion Long Hu He"
-            width={400}
-            height={400}
-            priority
-            className="drop-shadow-lg"
-          />
+          <div className="relative w-full max-w-md h-auto mx-auto"> {/* Added a wrapper div for responsive sizing */}
+            <Image
+              src="/Logo-dorado.webp"
+              alt="Logo de la Asociacion Long Hu He"
+              width={500}
+              height={500}
+              priority
+              className="drop-shadow-lg"
+            />
+          </div>
         </motion.div>
       </section>
 
-      <section className="relative z-10 bg-background py-16 text-center">
+      <section className="relative z-10 bg-background py-12 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <h2
             className={`text-5xl md:text-7xl lg:text-8xl font-normal mb-6 hero-text leading-normal transition-all duration-1000 font-marshathedead ${
@@ -156,7 +158,7 @@ export function TournamentHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              className={`text-secondary inline-block leading-normal`}
+              className={`text-secondary inline-block leading-normal font-[var(--font-storm-gust)]`}
             >
               2025
             </motion.span>

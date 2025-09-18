@@ -63,7 +63,7 @@ export function AdvancedCountdown() {
           transition={{ delay: index * 0.1, type: "spring" }}
           className="relative"
         >
-          <div className="bg-gradient-to-br from-orange-600 to-red-700 rounded-lg p-4 min-w-[100px] shadow-2xl border border-orange-500/30">
+          <div className="bg-gradient-to-br from-orange-600 to-red-700 rounded-lg p-1 sm:p-4 min-w-[60px] sm:min-w-[80px] md:min-w-[100px] shadow-2xl border border-orange-500/30">
             <AnimatePresence mode="wait">
               <motion.div
                 key={unit.value}
@@ -80,12 +80,12 @@ export function AdvancedCountdown() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -20, opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="text-7xl font-extrabold text-white mb-1"
+                    className="text-3xl sm:text-5xl md:text-7xl font-extrabold text-white mb-1"
                   >
                     {unit.value.toString().padStart(2, "0")}
                   </motion.div>
                 </AnimatePresence>
-                <div className="text-sm text-orange-200 uppercase tracking-wider">{unit.label}</div>
+                <div className="text-[10px] sm:text-sm text-orange-200 uppercase tracking-wider">{unit.label}</div> {/* Adjusted font size for label */}
               </motion.div>
             </AnimatePresence>
           </div>
