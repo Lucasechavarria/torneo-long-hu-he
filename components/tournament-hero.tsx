@@ -58,8 +58,7 @@ export function TournamentHero() {
     if (typeof window !== "undefined" && (window as any).playClickSound) {
       ;(window as any).playClickSound()
     }
-    router.push(`/#registration?type=${type}`);
-    // document.getElementById("registration")?.scrollIntoView({ behavior: "smooth" })
+    document.getElementById("registration")?.scrollIntoView({ behavior: "smooth" });
   }
 
   return (
@@ -162,7 +161,7 @@ export function TournamentHero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.5 }}
-              className={`text-secondary inline-block leading-normal font-[var(--font-storm-gust)]`}
+              className={`text-secondary inline-block leading-normal font-[var(--font-marshathedead)]`}
             >
               2025
             </motion.span>
@@ -238,24 +237,29 @@ export function TournamentHero() {
             transition={{ delay: 1.4, duration: 0.5 }}
             className="flex flex-col md:flex-row gap-4 justify-center mt-8"
           >
-            <Button
-              onClick={() => scrollToRegistration('individual')}
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-foreground px-8 py-6 text-xl font-bold glow-border transform transition-all duration-300 relative overflow-hidden group"
-              onMouseEnter={() => {
-                if (typeof window !== "undefined" && (window as any).playHoverSound) {
-                  ;(window as any).playHoverSound()
-                }
-              }}
+            <motion.div
+              whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 215, 0, 0.6)" }}
+              whileTap={{ scale: 0.95 }}
             >
-              <span className="relative z-10 flex items-center gap-2"><User className="w-5 h-5" /> Inscripción Individual</span>
-              <motion.div
-                initial={{ x: "-100%" }}
-                animate={{ x: "100%" }}
-                transition={{ duration: 1.5, ease: "linear", repeat: Infinity, repeatDelay: 1 }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-              />
-            </Button>
+              <Button
+                onClick={() => scrollToRegistration('individual')}
+                size="lg"
+                className="bg-primary hover:bg-primary/90 text-foreground px-8 py-6 text-xl font-bold glow-border transform transition-all duration-300 relative overflow-hidden group"
+                onMouseEnter={() => {
+                  if (typeof window !== "undefined" && (window as any).playHoverSound) {
+                    ;(window as any).playHoverSound()
+                  }
+                }}
+              >
+                <span className="relative z-10 flex items-center gap-2"><User className="w-5 h-5" /> Inscripción</span>
+                <motion.div
+                  initial={{ x: "-100%" }}
+                  animate={{ x: "100%" }}
+                  transition={{ duration: 1.5, ease: "linear", repeat: Infinity, repeatDelay: 1 }}
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                />
+              </Button>
+            </motion.div>
             
           </motion.div>
         </div>

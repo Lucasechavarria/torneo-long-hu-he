@@ -4,9 +4,11 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import { useRouter } from 'next/navigation';
 
 export function TournamentHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,7 +19,10 @@ export function TournamentHeader() {
   }, [])
 
   const scrollToRegistration = () => {
-    document.getElementById("registration")?.scrollIntoView({ behavior: "smooth" })
+    if (typeof window !== "undefined" && (window as any).playClickSound) {
+      ;(window as any).playClickSound()
+    }
+    document.getElementById("registration")?.scrollIntoView({ behavior: "smooth" });
   }
 
   return (
@@ -45,7 +50,7 @@ export function TournamentHeader() {
         </div>
         <motion.div className="relative hidden sm:block"> {/* Added relative positioning for glow and hidden on small screens */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 215, 0, 0.6)" }}
             whileTap={{ scale: 0.95 }}
             animate={{
               scale: [1, 1.02, 1],
@@ -61,7 +66,7 @@ export function TournamentHeader() {
               onClick={scrollToRegistration}
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-base md:px-10 md:py-5 md:text-xl font-semibold glow-border shadow-xl" // Responsive padding and font size
             >
-              Inscribirme
+              Inscripción
             </Button>
           </motion.div>
           {/* Glow effect */}
