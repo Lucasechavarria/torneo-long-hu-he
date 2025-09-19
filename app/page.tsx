@@ -5,7 +5,7 @@ import { TournamentFooter } from "@/components/tournament-footer"
 import { AnimatedBackground } from "@/components/animated-background"
 import { ScrollProgress } from "@/components/scroll-progress"
 import { InteractiveTournamentBracket } from "@/components/interactive-tournament-bracket"
-import { MartialArtsRegistrationForm } from "@/components/martial-arts-registration-form"
+import MartialArtsRegistrationForm from "@/components/martial-arts-registration-form"
 import { SoundManager } from "@/components/sound-manager"
 
 export default function Home() {

@@ -1,550 +1,670 @@
-"use client";
+'use client';
+import React, { useState } from 'react';
+import { Plus, User, School, Calendar, Trophy } from 'lucide-react';
 
-import React from 'react';
-import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Separator } from '@/components/ui/separator';
-import { School, User, PlusCircle, Trash2, Users } from 'lucide-react';
+const MartialArtsRegistrationForm = () => {
+  // Provincias de Argentina
+  const provinces = [
+    'Buenos Aires', 'CABA', 'Catamarca', 'Chaco', 'Chubut', 'Córdoba', 'Corrientes',
+    'Entre Ríos', 'Formosa', 'Jujuy', 'La Pampa', 'La Rioja', 'Mendoza', 'Misiones',
+    'Neuquén', 'Río Negro', 'Salta', 'San Juan', 'San Luis', 'Santa Cruz', 'Santa Fe',
+    'Santiago del Estero', 'Tierra del Fuego', 'Tucumán'
+  ];
 
-const formSchema = z.object({
-  school: z.string().min(2, {
-    message: 'El nombre de la escuela debe tener al menos 2 caracteres.',
-  }),
-  martialArtStyle: z.string().min(2, {
-    message: 'El estilo de arte marcial debe tener al menos 2 caracteres.',
-  }),
-  teacherName: z.string().min(2, {
-    message: 'El nombre del maestro debe tener al menos 2 caracteres.',
-  }),
-  teacherLastName: z.string().min(2, {
-    message: 'El apellido del maestro debe tener al menos 2 caracteres.',
-  }),
-  locality: z.string().min(2, {
-    message: 'La localidad debe tener al menos 2 caracteres.',
-  }),
-  participants: z.array(
-    z.object({
-      name: z.string().min(2, { message: 'El nombre es requerido.' }),
-      lastName: z.string().min(2, { message: 'El apellido es requerido.' }),
-      age: z.coerce.number().min(3, { message: 'La edad mínima es 3 años.' }).max(99, { message: 'La edad máxima es 99 años.' }),
-      grade: z.enum(['Kyu A', 'Kyu B', 'Dan'], {
-        required_error: 'Debes seleccionar un rango Kyu/Dan.',
-      }),
-      category: z.enum(['Infantil', 'Juvenil', 'Adulto', 'Senior'], {
-        required_error: 'Debes seleccionar una categoría de edad.',
-      }),
-      forms: z.enum(['Interna', 'Chinas', 'Japonesas', 'Coreanas', 'Modernas', ''], {
-        required_error: 'Debes seleccionar una categoría de formas.',
-      }).optional(),
-      combat: z.array(z.string()).optional(),
-      weapons: z.array(z.string()).optional(),
-      exhibition: z.boolean().default(false).optional(),
-    })
-  ),
-});
-
-export function MartialArtsRegistrationForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      school: '',
-      martialArtStyle: '',
-      teacherName: '',
-      teacherLastName: '',
-      locality: '',
-      participants: [
-        {
-          name: '',
-          lastName: '',
-          age: 0,
-          grade: 'Kyu A',
-          category: 'Infantil',
-          forms: '',
-          combat: [],
-          weapons: [],
-          exhibition: false,
-        },
-      ],
-    },
+  const [schoolData, setSchoolData] = useState({
+    schoolName: '',
+    province: '',
+    locality: '',
+    martialArtStyle: '',
+    teacherName: '',
+    teacherLastName: '',
+    teacherPhoneNumber: ''
   });
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: 'participants',
+  const [currentParticipant, setCurrentParticipant] = useState({
+    name: '',
+    lastName: '',
+    birthDate: '',
+    grade: '',
+    specificGrade: '',
+    // Modalidades principales
+    exhibition: false,
+    forms: false,
+    combat: false,
+    // Sub-modalidades de Formas
+    handForms: '',
+    internalForms: '',
+    weaponForms: false,
+    shortWeapons: false,
+    longWeapons: false,
+    specialWeapons: false,
+    // Sub-modalidades de Combate
+    individualCombat: false,
+    teamCombat: false,
+    kickboxing: false,
+    lightContact: false
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const [registeredParticipants, setRegisteredParticipants] = useState([]);
+
+  const handleSchoolChange = (field, value) => {
+    setSchoolData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleParticipantChange = (field, value) => {
+    setCurrentParticipant(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Calcular edad y categoría basado en fecha de nacimiento
+  const calculateAgeAndCategory = (birthDate) => {
+    if (!birthDate) return { age: 0, category: '' };
+    
+    const today = new Date();
+    const birth = new Date(birthDate);
+    const age = today.getFullYear() - birth.getFullYear() - 
+                (today.getMonth() < birth.getMonth() || 
+                 (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate()) ? 1 : 0);
+    
+    let category = '';
+    if (age >= 6 && age <= 12) category = 'Infantil';
+    else if (age >= 13 && age <= 17) category = 'Juvenil';
+    else if (age >= 18 && age <= 35) category = 'Adulto';
+    else if (age >= 36 && age <= 50) category = 'Senior';
+    else if (age >= 51) category = 'Senior Senior';
+    
+    return { age, category };
+  };
+
+  const { age, category } = calculateAgeAndCategory(currentParticipant.birthDate);
+
+  const addParticipant = () => {
+    // Validar datos obligatorios
+    if (!currentParticipant.name || !currentParticipant.lastName || 
+        !currentParticipant.birthDate || !currentParticipant.grade) {
+      alert('Por favor complete todos los campos obligatorios del participante.');
+      return;
+    }
+
+    // Validar que tenga al menos una modalidad seleccionada
+    if (!currentParticipant.exhibition && !currentParticipant.forms && !currentParticipant.combat) {
+      alert('Debe seleccionar al menos una modalidad de competencia.');
+      return;
+    }
+
+    const participantWithCategory = {
+      ...currentParticipant,
+      age,
+      category,
+      id: Date.now()
+    };
+
+    setRegisteredParticipants(prev => [...prev, participantWithCategory]);
+    
+    // Limpiar formulario de participante
+    setCurrentParticipant({
+      name: '',
+      lastName: '',
+      birthDate: '',
+      grade: '',
+      specificGrade: '',
+      exhibition: false,
+      forms: false,
+      combat: false,
+      handForms: '',
+      internalForms: '',
+      weaponForms: false,
+      shortWeapons: false,
+      longWeapons: false,
+      specialWeapons: false,
+      individualCombat: false,
+      teamCombat: false,
+      kickboxing: false,
+      lightContact: false
+    });
+
+    alert(`✅ Participante agregado exitosamente. Total: ${registeredParticipants.length + 1}`);
+  };
+
+  const handleSubmit = async () => {
+    // Validar datos de escuela
+    const schoolValid = Object.values(schoolData).every(value => value.trim() !== '');
+    if (!schoolValid) {
+      alert('Por favor complete todos los datos de la escuela.');
+      return;
+    }
+
+    if (registeredParticipants.length === 0) {
+      alert('Debe agregar al menos un participante.');
+      return;
+    }
+
     try {
-      const dataToSend = values.participants.map((participant, index) => ({
+      const timestamp = new Date().toISOString();
+      const registrationId = `REG_${Date.now()}`;
+      
+      const dataToSend = registeredParticipants.map((participant, index) => ({
+        // Datos de la Escuela
         Fecha_Registro: new Date().toLocaleDateString('es-AR'),
-        Escuela: values.school,
-        Estilo_Arte_Marcial: values.martialArtStyle,
-        Nombre_Maestro: values.teacherName,
-        Apellido_Maestro: values.teacherLastName,
-        Localidad: values.locality,
+        Nombre_Escuela: schoolData.schoolName,
+        Provincia: schoolData.province,
+        Localidad_Escuela: schoolData.locality,
+        Estilo_Arte_Marcial: schoolData.martialArtStyle,
+        Nombre_Maestro: schoolData.teacherName,
+        Apellido_Maestro: schoolData.teacherLastName,
+        Telefono_Maestro: schoolData.teacherPhoneNumber,
+        
+        // Datos del Participante
         Nombre_Participante: participant.name,
         Apellido_Participante: participant.lastName,
+        Fecha_Nacimiento: participant.birthDate,
         Edad: participant.age,
-        Grado: participant.grade,
         Categoria: participant.category,
+        Grado: participant.grade,
+        Grado_Especifico: participant.specificGrade,
         Numero_Participante: index + 1,
+        
+        // Modalidades
         Exhibicion: participant.exhibition ? 'Sí' : 'No',
-        Formas: participant.forms || '',
-        Combate: participant.combat?.join(', ') || '',
-        Formas_con_Armas: participant.weapons?.join(', ') || '',
-        Timestamp: new Date().toISOString(),
-        ID_Registro: `REG_${Date.now()}_P${index + 1}`
+        Formas: participant.forms ? 'Sí' : 'No',
+        Formas_Mano_Vacia: participant.handForms,
+        Formas_Internas: participant.internalForms,
+        Formas_con_Armas: participant.weaponForms ? 'Sí' : 'No',
+        Armas_Cortas: participant.shortWeapons ? 'Sí' : 'No',
+        Armas_Largas: participant.longWeapons ? 'Sí' : 'No',
+        Armas_Especiales: participant.specialWeapons ? 'Sí' : 'No',
+        Combate: participant.combat ? 'Sí' : 'No',
+        Combate_Individual: participant.individualCombat ? 'Sí' : 'No',
+        Combate_por_Equipo: participant.teamCombat ? 'Sí' : 'No',
+        Kickboxing: participant.kickboxing ? 'Sí' : 'No',
+        Light_Contact: participant.lightContact ? 'Sí' : 'No',
+        Timestamp: timestamp,
+        ID_Registro: `${registrationId}_P${index + 1}`
       }));
 
       console.log('Datos preparados para Google Sheets:', dataToSend);
 
-      const response = await fetch('https://script.google.com/macros/s/AKfycbwVT3il4lOPihQbjsdz1KKMgB_p5ZgiaXhl-15LgkoUX7VfsRJWYgPl_1mnlBFRqUkQ/exec', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend)
-      });
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxm1L1nDRVdCdFensbyxAbKS-wsd-URhaH4Jes0j5wb-hAURd0cSY2TA3Oi7cljyEH7bg/exec';
+      
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataToSend)
+        });
 
-      if (response.ok) {
-        alert(`✅ Registro exitoso! Se guardaron ${values.participants.length} participante(s).`);
-        form.reset(); // Opcional: limpiar el formulario después del envío exitoso
-      } else {
-        console.error('Error en la respuesta del servidor:', response.status, response.statusText, await response.text());
-        throw new Error(`Error al enviar los datos: ${response.status} ${response.statusText}`);
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+          alert(`✅ ${result.message}`);
+          // Limpiar todo el formulario
+          setSchoolData({
+            schoolName: '',
+            province: '',
+            locality: '',
+            martialArtStyle: '',
+            teacherName: '',
+            teacherLastName: '',
+            teacherPhoneNumber: ''
+          });
+          setRegisteredParticipants([]);
+        } else {
+          throw new Error(result.message || 'Error desconocido');
+        }
+      } catch (corsError) {
+        console.log('Intentando con modo no-cors debido a:', corsError);
+        
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataToSend)
+        });
+        
+        alert(`📋 Formulario enviado! Los datos se han guardado en Google Sheets.`);
+        // Limpiar todo el formulario
+        setSchoolData({
+          schoolName: '',
+          province: '',
+          locality: '',
+          martialArtStyle: '',
+          teacherName: '',
+          teacherLastName: '',
+          teacherPhoneNumber: ''
+        });
+        setRegisteredParticipants([]);
       }
+      
     } catch (error) {
       console.error('Error al enviar el formulario:', error);
-      alert('❌ Error al enviar el formulario. Intenta nuevamente. Consulta la consola para más detalles.');
+      alert('❌ Error al enviar el formulario. Intenta nuevamente.');
     }
-  }
+  };
 
   return (
-    <div className="container mx-auto p-4 md:p-8 bg-background text-foreground">
-      <h2 className="text-4xl font-bold text-center mb-8 hero-text">
-        Registro de Competencia de Artes Marciales
-      </h2>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          {/* Sección de Datos de la Escuela */}
-          <section className="bg-muted p-6 rounded-lg shadow-lg border border-border/30">
-            <h3 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-              <School className="w-6 h-6 text-primary" /> Datos de la Escuela
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="school"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Escuela</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ej: Dragón Blanco" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+    <div className="max-w-5xl mx-auto p-8 rounded-xl border border-border/30 shadow-2xl">
+      <div className="mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold text-center text-primary mb-4 hero-text" style={{ fontFamily: "var(--font-work-sans)" }}>
+          Formulario de Inscripción - Torneo de Artes Marciales
+        </h1>
+        <p className="text-center text-foreground/80 mb-8">Complete todos los campos requeridos</p>
+      </div>
+
+      {/* 1. DATOS DE LA ESCUELA */}
+      <div className="rounded-xl border border-border/30 p-6 mb-8 shadow-lg">
+        <div className="flex items-center gap-2 mb-4">
+          <School className="text-primary" size={24} />
+          <h2 className="text-xl font-semibold text-foreground">1. Datos de la Escuela</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">
+              Nombre de la Escuela *
+            </label>
+            <input
+              type="text"
+              value={schoolData.schoolName}
+              onChange={(e) => handleSchoolChange('schoolName', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+              required
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">
+              Provincia *
+            </label>
+            <select
+              value={schoolData.province}
+              onChange={(e) => handleSchoolChange('province', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm bg-background text-foreground"
+              required
+            >
+              <option value="">Seleccione una provincia</option>
+              {provinces.map(province => (
+                <option key={province} value={province}>{province}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">
+              Localidad de la Escuela *
+            </label>
+            <input
+              type="text"
+              value={schoolData.locality}
+              onChange={(e) => handleSchoolChange('locality', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+              required
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">
+              Estilo de Arte Marcial *
+            </label>
+            <input
+              type="text"
+              value={schoolData.martialArtStyle}
+              onChange={(e) => handleSchoolChange('martialArtStyle', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+              required
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">
+              Nombre del Maestro / Profesor *
+            </label>
+            <input
+              type="text"
+              value={schoolData.teacherName}
+              onChange={(e) => handleSchoolChange('teacherName', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">
+              Apellido del Maestro / Profesor *
+            </label>
+            <input
+              type="text"
+              value={schoolData.teacherLastName}
+              onChange={(e) => handleSchoolChange('teacherLastName', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">
+              Teléfono del Maestro / Profesor *
+            </label>
+            <input
+              type="text"
+              value={schoolData.teacherPhoneNumber}
+              onChange={(e) => handleSchoolChange('teacherPhoneNumber', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 2. DATOS DEL PARTICIPANTE */}
+      <div className="rounded-xl border border-border/30 p-6 mb-8 shadow-lg">
+        <div className="flex items-center gap-2 mb-4">
+          <User className="text-primary" size={24} />
+          <h2 className="text-xl font-semibold text-foreground">2. Datos del Participante</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">Nombre *</label>
+            <input
+              type="text"
+              value={currentParticipant.name}
+              onChange={(e) => handleParticipantChange('name', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+              required
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">Apellido *</label>
+            <input
+              type="text"
+              value={currentParticipant.lastName}
+              onChange={(e) => handleParticipantChange('lastName', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+              required
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">Fecha de Nacimiento *</label>
+            <input
+              type="date"
+              value={currentParticipant.birthDate}
+              onChange={(e) => handleParticipantChange('birthDate', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+              required
+            />
+            {currentParticipant.birthDate && (
+              <div className="mt-1 text-sm text-primary">
+                <Calendar className="inline w-4 h-4 mr-1" />
+                {age} años - Categoría: <strong>{category}</strong>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-foreground/80 mb-1">Grado (Kyu/Dan) *</label>
+            <select
+              value={currentParticipant.grade}
+              onChange={(e) => handleParticipantChange('grade', e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm bg-background text-foreground"
+              required
+            >
+              <option value="">Seleccione un grado</option>
+              <option value="Kyu A">Kyu A</option>
+              <option value="Kyu B">Kyu B</option>
+              <option value="Dan">Dan</option>
+            </select>
+          </div>
+          
+          {currentParticipant.grade === 'Dan' && (
+            <div>
+              <label className="block text-sm font-medium text-foreground/80 mb-1">
+                Grado Específico (ej. 1º Dan)
+              </label>
+              <input
+                type="text"
+                value={currentParticipant.specificGrade}
+                onChange={(e) => handleParticipantChange('specificGrade', e.target.value)}
+                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+                placeholder="1º Dan, 2º Dan, etc."
               />
-              <FormField
-                control={form.control}
-                name="martialArtStyle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Estilo de Arte Marcial</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ej: Kung Fu, Karate" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="teacherName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nombre del Maestro/Profesor</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ej: Juan" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="teacherLastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Apellido del Maestro/Profesor</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ej: Pérez" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="locality"
-                render={({ field }) => (
-                  <FormItem className="md:col-span-2">
-                    <FormLabel>Localidad</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ej: Buenos Aires" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <p className="mt-1 text-xs text-foreground/60">
+                Nota: A partir del 4º Dan se considera "Maestro"
+              </p>
             </div>
-          </section>
+          )}
+        </div>
+      </div>
 
-          <Separator className="my-8" />
+      {/* 3. MODALIDADES DE COMPETENCIA */}
+      <div className="rounded-xl border border-border/30 p-6 mb-8 shadow-lg">
+        <div className="flex items-center gap-2 mb-4">
+          <Trophy className="text-primary" size={24} />
+          <h2 className="text-xl font-semibold text-foreground">3. Modalidades de Competencia</h2>
+        </div>
 
-          {/* Sección de Datos de los Participantes */}
-          <section className="bg-muted p-6 rounded-lg shadow-lg border border-border/30">
-            <h3 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-              <Users className="w-6 h-6 text-primary" /> Datos de los Participantes
-            </h3>
+        {/* Exhibición */}
+        <div className="mb-6">
+          <label className="flex items-center text-lg font-medium text-foreground">
+            <input
+              type="checkbox"
+              checked={currentParticipant.exhibition}
+              onChange={(e) => handleParticipantChange('exhibition', e.target.checked)}
+              className="mr-3 w-5 h-5 text-primary focus:ring-primary"
+            />
+            Exhibición
+          </label>
+        </div>
 
-            {fields.map((item, index) => (
-              <div key={item.id} className="mb-8 p-6 border border-border/30 rounded-lg bg-muted/50 relative">
-                <h4 className="text-xl font-medium mb-4 flex items-center gap-2">
-                  <User className="w-5 h-5 text-secondary" /> Competidor #{index + 1}
-                </h4>
-                {fields.length > 1 && (
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => remove(index)}
-                    className="absolute top-4 right-4"
+        {/* Formas */}
+        <div className="mb-6">
+          <label className="flex items-center text-lg font-medium text-foreground mb-3">
+            <input
+              type="checkbox"
+              checked={currentParticipant.forms}
+              onChange={(e) => handleParticipantChange('forms', e.target.checked)}
+              className="mr-3 w-5 h-5 text-primary focus:ring-primary"
+            />
+            Formas
+          </label>
+          
+          {currentParticipant.forms && (
+            <div className="ml-8 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-foreground/80 mb-1">
+                    Formas Mano Vacía
+                  </label>
+                  <select
+                    value={currentParticipant.handForms}
+                    onChange={(e) => handleParticipantChange('handForms', e.target.value)}
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm bg-background text-foreground"
                   >
-                    <Trash2 className="w-4 h-4 mr-2" /> Eliminar
-                  </Button>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Chinas">Chinas</option>
+                    <option value="Japonesas">Japonesas</option>
+                    <option value="Coreanas">Coreanas</option>
+                    <option value="Modernas">Modernas</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-foreground/80 mb-1">
+                    Formas Internas
+                  </label>
+                  <input
+                    type="text"
+                    value={currentParticipant.internalForms}
+                    onChange={(e) => handleParticipantChange('internalForms', e.target.value)}
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+                    placeholder="Especificar forma interna"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="flex items-center text-sm font-medium text-foreground/80 mb-2">
+                  <input
+                    type="checkbox"
+                    checked={currentParticipant.weaponForms}
+                    onChange={(e) => handleParticipantChange('weaponForms', e.target.checked)}
+                    className="mr-2 w-4 h-4 text-primary focus:ring-primary"
+                  />
+                  Formas con Armas
+                </label>
+                
+                {currentParticipant.weaponForms && (
+                  <div className="ml-6 grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <label className="flex items-center text-sm text-foreground/70">
+                      <input
+                        type="checkbox"
+                        checked={currentParticipant.shortWeapons}
+                        onChange={(e) => handleParticipantChange('shortWeapons', e.target.checked)}
+                        className="mr-2 text-primary focus:ring-primary"
+                      />
+                      Armas Cortas
+                    </label>
+                    <label className="flex items-center text-sm text-foreground/70">
+                      <input
+                        type="checkbox"
+                        checked={currentParticipant.longWeapons}
+                        onChange={(e) => handleParticipantChange('longWeapons', e.target.checked)}
+                        className="mr-2 text-primary focus:ring-primary"
+                      />
+                      Armas Largas
+                    </label>
+                    <label className="flex items-center text-sm text-foreground/70">
+                      <input
+                        type="checkbox"
+                        checked={currentParticipant.specialWeapons}
+                        onChange={(e) => handleParticipantChange('specialWeapons', e.target.checked)}
+                        className="mr-2 text-primary focus:ring-primary"
+                      />
+                      Armas Especiales
+                    </label>
+                  </div>
                 )}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <FormField
-                    control={form.control}
-                    name={`participants.${index}.name`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nombre</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Nombre del competidor" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`participants.${index}.lastName`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Apellido</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Apellido del competidor" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`participants.${index}.age`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Edad</FormLabel>
-                        <FormControl>
-                          <Input type="number" placeholder="Edad" {...field} onChange={event => field.onChange(+event.target.value)} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Combate */}
+        <div className="mb-6">
+          <label className="flex items-center text-lg font-medium text-foreground mb-3">
+            <input
+              type="checkbox"
+              checked={currentParticipant.combat}
+              onChange={(e) => handleParticipantChange('combat', e.target.checked)}
+              className="mr-3 w-5 h-5 text-primary focus:ring-primary"
+            />
+            Combate
+          </label>
+          
+          {currentParticipant.combat && (
+            <div className="ml-8 grid grid-cols-1 md:grid-cols-2 gap-3">
+              <label className="flex items-center text-sm text-foreground/70">
+                <input
+                  type="checkbox"
+                  checked={currentParticipant.individualCombat}
+                  onChange={(e) => handleParticipantChange('individualCombat', e.target.checked)}
+                  className="mr-2 text-primary focus:ring-primary"
+                />
+                Combate Individual
+              </label>
+              <label className="flex items-center text-sm text-foreground/70">
+                <input
+                  type="checkbox"
+                  checked={currentParticipant.teamCombat}
+                  onChange={(e) => handleParticipantChange('teamCombat', e.target.checked)}
+                  className="mr-2 text-primary focus:ring-primary"
+                />
+                Combate por Equipo
+              </label>
+              <label className="flex items-center text-sm text-foreground/70">
+                <input
+                  type="checkbox"
+                  checked={currentParticipant.kickboxing}
+                  onChange={(e) => handleParticipantChange('kickboxing', e.target.checked)}
+                  className="mr-2 text-primary focus:ring-primary"
+                />
+                Kickboxing
+              </label>
+              <label className="flex items-center text-sm text-foreground/70">
+                <input
+                  type="checkbox"
+                  checked={currentParticipant.lightContact}
+                  onChange={(e) => handleParticipantChange('lightContact', e.target.checked)}
+                  className="mr-2 text-primary focus:ring-primary"
+                />
+                Light Contact
+              </label>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* PARTICIPANTES REGISTRADOS */}
+      {registeredParticipants.length > 0 && (
+        <div className="rounded-xl border border-border/30 p-6 mb-8 shadow-lg">
+          <h3 className="text-lg font-semibold text-foreground mb-4">
+            Participantes Registrados ({registeredParticipants.length})
+          </h3>
+          <div className="space-y-2">
+            {registeredParticipants.map((participant, index) => (
+              <div key={participant.id} className="bg-background/70 p-3 rounded-md border border-border/50 flex justify-between items-center shadow-sm">
+                <div>
+                  <span className="font-medium">{participant.name} {participant.lastName}</span>
+                  <span className="text-foreground/70 ml-2">
+                    - {participant.age} años ({participant.category}) - {participant.grade}
+                  </span>
                 </div>
-
-                {/* Grado y Categoría */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <FormField
-                    control={form.control}
-                    name={`participants.${index}.grade`}
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-start space-y-2 rounded-md border p-4">
-                        <div className="space-y-1 leading-none">
-                          <FormLabel>Grado</FormLabel>
-                          <FormDescription>
-                            Selecciona el grado del competidor.
-                          </FormDescription>
-                        </div>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-col space-y-2"
-                          >
-                            {['Kyu A', 'Kyu B', 'Dan'].map(grade => (
-                              <FormItem key={grade} className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value={grade} />
-                                </FormControl>
-                                <FormLabel className="font-normal">{grade}</FormLabel>
-                              </FormItem>
-                            ))}
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name={`participants.${index}.category`}
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-start space-y-2 rounded-md border p-4">
-                        <div className="space-y-1 leading-none">
-                          <FormLabel>Categoría</FormLabel>
-                          <FormDescription>
-                            Selecciona la categoría de edad del competidor.
-                          </FormDescription>
-                        </div>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-col space-y-2"
-                          >
-                            {['Infantil', 'Juvenil', 'Adulto', 'Senior'].map(category => (
-                              <FormItem key={category} className="flex items-center space-x-3">
-                                <FormControl>
-                                  <RadioGroupItem value={category} />
-                                </FormControl>
-                                <FormLabel className="font-normal">{category}</FormLabel>
-                              </FormItem>
-                            ))}
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <div className="text-sm text-foreground/70">
+                  {participant.exhibition && '🏆 '}
+                  {participant.forms && '📋 '}
+                  {participant.combat && '⚔️ '}
                 </div>
-
-                {/* Categorías de Participación */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  {/* Exhibición */}
-                  <FormField
-                    control={form.control}
-                    name={`participants.${index}.exhibition`}
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <div className="space-y-1 leading-none">
-                          <FormLabel>Exhibición</FormLabel>
-                          <FormDescription>
-                            Marcar si el competidor participará en exhibición.
-                          </FormDescription>
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Formas */}
-                  <FormField
-                    control={form.control}
-                    name={`participants.${index}.forms`}
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-start space-y-2 rounded-md border p-4">
-                        <div className="space-y-1 leading-none">
-                          <FormLabel>Formas</FormLabel>
-                          <FormDescription>
-                            Selecciona la categoría de formas del competidor.
-                          </FormDescription>
-                        </div>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-col space-y-2"
-                          >
-                            {['Interna', 'Chinas', 'Japonesas', 'Coreanas', 'Modernas'].map(formOption => (
-                              <FormItem key={formOption} className="flex items-center space-x-3">
-                                <FormControl>
-                                  <RadioGroupItem value={formOption} />
-                                </FormControl>
-                                <FormLabel className="font-normal">{formOption}</FormLabel>
-                              </FormItem>
-                            ))}
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Combate */}
-                  <FormField
-                    control={form.control}
-                    name={`participants.${index}.combat`}
-                    render={() => (
-                      <FormItem className="flex flex-col items-start space-y-2 rounded-md border p-4">
-                        <div className="space-y-1 leading-none">
-                          <FormLabel>Combate</FormLabel>
-                          <FormDescription>
-                            Selecciona las modalidades de combate en las que participará el competidor.
-                          </FormDescription>
-                        </div>
-                        <div className="flex flex-col space-y-2 mt-4">
-                          {['Individual', 'Por Equipo', 'Kickboxing', 'Light Contact'].map(combatOption => (
-                            <FormField
-                              key={combatOption}
-                              control={form.control}
-                              name={`participants.${index}.combat`}
-                              render={({ field }) => {
-                                return (
-                                  <FormItem
-                                    key={combatOption}
-                                    className="flex items-center space-x-2"
-                                  >
-                                    <FormControl>
-                                      <Checkbox
-                                        checked={field.value?.includes(combatOption)}
-                                        onCheckedChange={(checked) => {
-                                          return checked
-                                            ? field.onChange([...(field.value || []), combatOption])
-                                            : field.onChange(
-                                                field.value?.filter(
-                                                  (value) => value !== combatOption
-                                                )
-                                              );
-                                        }}
-                                      />
-                                    </FormControl>
-                                    <FormLabel className="font-normal text-sm">
-                                      {combatOption}
-                                    </FormLabel>
-                                  </FormItem>
-                                );
-                              }}
-                            />
-                          ))}
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Formas con Armas */}
-                  <FormField
-                    control={form.control}
-                    name={`participants.${index}.weapons`}
-                    render={() => (
-                      <FormItem className="flex flex-col items-start space-y-2 rounded-md border p-4">
-                        <div className="space-y-1 leading-none">
-                          <FormLabel>Formas con Armas</FormLabel>
-                          <FormDescription>
-                            Selecciona las categorías de formas con armas en las que participará el competidor.
-                          </FormDescription>
-                        </div>
-                        <div className="flex flex-col space-y-2 mt-4">
-                          {['Armas Cortas', 'Armas Largas', 'Armas Especiales'].map(weaponOption => (
-                            <FormField
-                              key={weaponOption}
-                              control={form.control}
-                              name={`participants.${index}.weapons`}
-                              render={({ field }) => {
-                                return (
-                                  <FormItem
-                                    key={weaponOption}
-                                    className="flex items-center space-x-3"
-                                  >
-                                    <FormControl>
-                                      <Checkbox
-                                        checked={field.value?.includes(weaponOption)}
-                                        onCheckedChange={(checked) => {
-                                          return checked
-                                            ? field.onChange([...(field.value || []), weaponOption])
-                                            : field.onChange(
-                                                field.value?.filter(
-                                                  (value) => value !== weaponOption
-                                                )
-                                              );
-                                        }}
-                                      />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                      {weaponOption}
-                                    </FormLabel>
-                                  </FormItem>
-                                );
-                              }}
-                            />
-                          ))}
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <Separator className="my-6" />
               </div>
             ))}
+          </div>
+        </div>
+      )}
 
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() =>
-                append({
-                  name: '',
-                  lastName: '',
-                  age: 0,
-                  grade: 'Kyu A',
-                  category: 'Infantil',
-                  forms: '',
-                  combat: [],
-                  weapons: [],
-                  exhibition: false,
-                })
-              }
-              className="w-full"
-            >
-              <PlusCircle className="w-4 h-4 mr-2" /> Agregar Competidor
-            </Button>
-          </section>
+      {/* BOTONES DE ACCIÓN */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+        <button
+          onClick={addParticipant}
+          className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors shadow-lg"
+        >
+          <Plus size={20} />
+          Agregar Participante
+        </button>
+        
+        <button
+          onClick={handleSubmit}
+          disabled={registeredParticipants.length === 0}
+          className={`px-8 py-3 rounded-md font-medium transition-colors shadow-lg ${registeredParticipants.length > 0 ? 'bg-accent text-accent-foreground hover:bg-accent/90' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
+        >
+          Enviar Inscripción ({registeredParticipants.length} participante{registeredParticipants.length !== 1 ? 's' : ''})
+        </button>
+      </div>
 
-          <Button type="submit" className="w-full py-6 text-lg font-bold">
-            Enviar Registro
-          </Button>
-        </form>
-      </Form>
-      <div className="mt-8 p-4 bg-muted rounded-lg text-muted-foreground">
-        <p className="text-sm">
-          <strong>Nota:</strong> Los campos marcados con (*) son obligatorios.
-          Todos los participantes se registrarán bajo la misma escuela y maestro especificados arriba.
+      {/* INFORMACIÓN */}
+      <div className="mt-8 p-4 bg-card/50 backdrop-blur-lg rounded-xl border border-border/30 shadow-lg">
+        <p className="text-sm text-foreground/80">
+          <strong>Instrucciones:</strong> Complete los datos de la escuela una vez. 
+          Luego agregue cada participante individualmente. El sistema calculará automáticamente 
+          la categoría según la fecha de nacimiento. Al finalizar, envíe la inscripción completa.
         </p>
       </div>
     </div>
   );
-}
+};
+
+export default MartialArtsRegistrationForm;

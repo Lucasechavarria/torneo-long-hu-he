@@ -8,6 +8,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Eclipse';
+  src: url('/fonts/eclipse/Eclipse Demo.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -86,6 +93,7 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-marshathedead: 'MarshalTheDead', sans-serif;
+  --font-eclipse: 'Eclipse', sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
