@@ -2,6 +2,40 @@
 import React, { useState } from 'react';
 import { Plus, User, School, Calendar, Trophy } from 'lucide-react';
 
+interface SchoolData {
+  schoolName: string;
+  province: string;
+  locality: string;
+  martialArtStyle: string;
+  teacherName: string;
+  teacherLastName: string;
+  teacherPhoneNumber: string;
+}
+
+interface Participant {
+  id: number;
+  name: string;
+  lastName: string;
+  birthDate: string;
+  age: number;
+  category: string;
+  grade: string;
+  specificGrade: string;
+  exhibition: boolean;
+  forms: boolean;
+  combat: boolean;
+  handForms: string;
+  internalForms: string;
+  weaponForms: boolean;
+  shortWeapons: boolean;
+  longWeapons: boolean;
+  specialWeapons: boolean;
+  individualCombat: boolean;
+  teamCombat: boolean;
+  kickboxing: boolean;
+  lightContact: boolean;
+}
+
 const MartialArtsRegistrationForm = () => {
   // Provincias de Argentina
   const provinces = [
@@ -11,7 +45,7 @@ const MartialArtsRegistrationForm = () => {
     'Santiago del Estero', 'Tierra del Fuego', 'Tucumán'
   ];
 
-  const [schoolData, setSchoolData] = useState({
+  const [schoolData, setSchoolData] = useState<SchoolData>({
     schoolName: '',
     province: '',
     locality: '',
@@ -21,7 +55,7 @@ const MartialArtsRegistrationForm = () => {
     teacherPhoneNumber: ''
   });
 
-  const [currentParticipant, setCurrentParticipant] = useState({
+  const [currentParticipant, setCurrentParticipant] = useState<Omit<Participant, 'id' | 'age' | 'category'>>({
     name: '',
     lastName: '',
     birthDate: '',
@@ -45,18 +79,18 @@ const MartialArtsRegistrationForm = () => {
     lightContact: false
   });
 
-  const [registeredParticipants, setRegisteredParticipants] = useState([]);
+  const [registeredParticipants, setRegisteredParticipants] = useState<Participant[]>([]);
 
-  const handleSchoolChange = (field, value) => {
+  const handleSchoolChange = (field: keyof SchoolData, value: string) => {
     setSchoolData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleParticipantChange = (field, value) => {
+  const handleParticipantChange = (field: keyof Omit<Participant, 'id' | 'age' | 'category'>, value: string | boolean) => {
     setCurrentParticipant(prev => ({ ...prev, [field]: value }));
   };
 
   // Calcular edad y categoría basado en fecha de nacimiento
-  const calculateAgeAndCategory = (birthDate) => {
+  const calculateAgeAndCategory = (birthDate: string) => {
     if (!birthDate) return { age: 0, category: '' };
     
     const today = new Date();

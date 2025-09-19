@@ -48,7 +48,7 @@ export function AdvancedCountdown() {
         <motion.div
           key={unit.label}
           initial={{ scale: 0, rotateY: 180 }}
-          animate={{ scale: 1, rotateY: 0,
+          animate={{ rotateY: 0,
             // Animación de pulso constante
             scale: [1, 1.05, 1],
             transition: {

@@ -41,22 +41,18 @@ export function SoundManager() {
   // Expose sound functions globally
   useEffect(() => {
     ;(window as any).playSuccessSound = () =>
-      (playTone(
-        523.25,
+      playTone(
+        523.25, // C5
         0.2,
         0.05,
-      )(
-        // C5
-        window as any,
-      ).playHoverSound = () =>
-        (playTone(
-          440,
-          0.1,
-          0.03,
-        )(
-          // A4
-          window as any,
-        ).playClickSound = () => playTone(659.25, 0.15, 0.04))) // E5
+      )
+    ;(window as any).playHoverSound = () =>
+      playTone(
+        440, // A4
+        0.1,
+        0.03,
+      )
+    ;(window as any).playClickSound = () => playTone(659.25, 0.15, 0.04) // E5
   }, [])
 
   return null
