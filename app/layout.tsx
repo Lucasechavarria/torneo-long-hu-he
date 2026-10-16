@@ -4,8 +4,20 @@ import "./globals.css"
 import ClientLayout from "./ClientLayout"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
-import { Work_Sans, Open_Sans, Yuji_Boku } from "next/font/google"
+import { Work_Sans, Open_Sans, Yuji_Boku, Cinzel, Montserrat } from "next/font/google"
 import localFont from "next/font/local"
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  variable: "--font-cinzel",
+  weight: ["400", "600", "700", "800", "900"],
+})
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  weight: ["300", "400", "500", "600", "700"],
+})
 
 const workSans = Work_Sans({
   subsets: ["latin"],
@@ -36,9 +48,9 @@ const theUltraBrush = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "Torneo Abierto de Artes Marciales 2025 | Asociacion Long Hu He",
+  title: "Torneo Abierto de Artes Marciales 2026 | Asociación Long Hu He",
   description:
-    "Inscríbete al Torneo Abierto de Artes Marciales 2025. Formas tradicionales, combate, armas y más. 23 de noviembre en Burzaco.",
+    "Torneo Abierto de Artes Marciales 2026 - Asociación Long Hu He (Kung Fu Shaolin - Taijiquan Sur Argentina). Domingo 22 de Noviembre de 2026 en Club Alberdi de Burzaco. Formas, armas, point fighting, tai chi y más.",
   generator: "v0.app",
   icons: {
     icon: '/Logo-dorado.webp',
@@ -53,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${workSans.variable} ${openSans.variable} ${yujiBoku.variable} ${marshalTheDead.variable} ${theUltraBrush.variable}`}
+        className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${cinzel.variable} ${montserrat.variable} ${workSans.variable} ${openSans.variable} ${yujiBoku.variable} ${marshalTheDead.variable} ${theUltraBrush.variable}`}
       >
         <ClientLayout>{children}</ClientLayout>
       </body>

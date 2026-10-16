@@ -18,82 +18,86 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Updated color palette to match martial arts tournament theme with black background and orange accents */
-  --background: oklch(0 0 0); /* Black background */
-  --foreground: oklch(1 0 0); /* White text */
-  --card: oklch(1 0 0); /* White cards */
-  --card-foreground: oklch(0 0 0); /* Black text on cards */
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0 0 0);
-  --primary: oklch(0.65 0.25 35); /* Vibrant orange #FF6F00 */
-  --primary-foreground: oklch(1 0 0); /* White text on orange */
-  --secondary: oklch(0.75 0.15 45); /* Light orange #FFAB40 */
-  --secondary-foreground: oklch(0 0 0); /* Black text on light orange */
-  --muted: oklch(0.15 0 0); /* Dark gray for muted sections */
-  --muted-foreground: oklch(0.7 0 0); /* Light gray text */
-  --accent: oklch(0.75 0.15 45); /* Light orange accent */
-  --accent-foreground: oklch(0 0 0);
-  --destructive: oklch(0.6 0.25 25); /* Red for errors */
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.65 0.25 35); /* Orange borders */
-  --input: oklch(1 0 0); /* White input backgrounds */
-  --ring: oklch(0.75 0.15 45); /* Light orange focus rings */
-  --chart-1: oklch(0.65 0.25 35);
-  --chart-2: oklch(0.75 0.15 45);
-  --chart-3: oklch(0.65 0.25 35);
-  --chart-4: oklch(0.75 0.15 45);
-  --chart-5: oklch(0.65 0.25 35);
+  /* 2026 Martial Arts Tournament - Imperial Gold, Crimson Red, Deep Ink Black */
+  --background: oklch(0.09 0.015 25); /* Deep Ink Black #0d0b0c */
+  --foreground: oklch(0.97 0.01 65); /* Warm white/ivory text */
+  --card: oklch(0.13 0.02 30); /* Dark parchment card */
+  --card-foreground: oklch(0.96 0.01 65);
+  --popover: oklch(0.12 0.02 30);
+  --popover-foreground: oklch(0.96 0.01 65);
+  --primary: oklch(0.78 0.17 72); /* Imperial Gold #f5b731 */
+  --primary-foreground: oklch(0.1 0.02 30); /* Dark text on gold */
+  --secondary: oklch(0.55 0.22 25); /* Crimson Red #c81d25 */
+  --secondary-foreground: oklch(0.98 0 0); /* White on crimson */
+  --muted: oklch(0.18 0.015 30);
+  --muted-foreground: oklch(0.72 0.02 65);
+  --accent: oklch(0.85 0.14 80); /* Bright gold accent */
+  --accent-foreground: oklch(0.1 0.02 30);
+  --destructive: oklch(0.5 0.24 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.35 0.08 65); /* Subtle antique bronze border */
+  --input: oklch(0.16 0.02 30);
+  --ring: oklch(0.78 0.17 72); /* Gold focus ring */
+  --chart-1: oklch(0.78 0.17 72);
+  --chart-2: oklch(0.55 0.22 25);
+  --chart-3: oklch(0.85 0.14 80);
+  --chart-4: oklch(0.45 0.18 25);
+  --chart-5: oklch(0.65 0.15 70);
   --radius: 0.5rem;
-  --sidebar: oklch(0 0 0);
-  --sidebar-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.65 0.25 35);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.75 0.15 45);
-  --sidebar-accent-foreground: oklch(0 0 0);
-  --sidebar-border: oklch(0.65 0.25 35);
-  --sidebar-ring: oklch(0.75 0.15 45);
+  --sidebar: oklch(0.09 0.015 25);
+  --sidebar-foreground: oklch(0.97 0.01 65);
+  --sidebar-primary: oklch(0.78 0.17 72);
+  --sidebar-primary-foreground: oklch(0.1 0.02 30);
+  --sidebar-accent: oklch(0.18 0.015 30);
+  --sidebar-accent-foreground: oklch(0.97 0.01 65);
+  --sidebar-border: oklch(0.35 0.08 65);
+  --sidebar-ring: oklch(0.78 0.17 72);
 }
 
 .dark {
-  --background: oklch(0 0 0);
-  --foreground: oklch(1 0 0);
-  --card: oklch(0.1 0 0);
-  --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.1 0 0);
-  --popover-foreground: oklch(1 0 0);
-  --primary: oklch(0.65 0.25 35);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.2 0 0);
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.2 0 0);
-  --muted-foreground: oklch(0.7 0 0);
-  --accent: oklch(0.2 0 0);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.5 0.25 25);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.2 0 0);
-  --input: oklch(0.2 0 0);
-  --ring: oklch(0.4 0 0);
-  --chart-1: oklch(0.65 0.25 35);
-  --chart-2: oklch(0.75 0.15 45);
-  --chart-3: oklch(0.65 0.25 35);
-  --chart-4: oklch(0.75 0.15 45);
-  --chart-5: oklch(0.65 0.25 35);
-  --sidebar: oklch(0.1 0 0);
-  --sidebar-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.65 0.25 35);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.2 0 0);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.2 0 0);
-  --sidebar-ring: oklch(0.4 0 0);
+  --background: oklch(0.08 0.015 25);
+  --foreground: oklch(0.97 0.01 65);
+  --card: oklch(0.12 0.02 30);
+  --card-foreground: oklch(0.96 0.01 65);
+  --popover: oklch(0.11 0.02 30);
+  --popover-foreground: oklch(0.96 0.01 65);
+  --primary: oklch(0.78 0.17 72);
+  --primary-foreground: oklch(0.1 0.02 30);
+  --secondary: oklch(0.55 0.22 25);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.16 0.015 30);
+  --muted-foreground: oklch(0.7 0.02 65);
+  --accent: oklch(0.85 0.14 80);
+  --accent-foreground: oklch(0.1 0.02 30);
+  --destructive: oklch(0.5 0.24 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.32 0.07 65);
+  --input: oklch(0.15 0.02 30);
+  --ring: oklch(0.78 0.17 72);
+  --chart-1: oklch(0.78 0.17 72);
+  --chart-2: oklch(0.55 0.22 25);
+  --chart-3: oklch(0.85 0.14 80);
+  --chart-4: oklch(0.45 0.18 25);
+  --chart-5: oklch(0.65 0.15 70);
+  --sidebar: oklch(0.08 0.015 25);
+  --sidebar-foreground: oklch(0.97 0.01 65);
+  --sidebar-primary: oklch(0.78 0.17 72);
+  --sidebar-primary-foreground: oklch(0.1 0.02 30);
+  --sidebar-accent: oklch(0.16 0.015 30);
+  --sidebar-accent-foreground: oklch(0.97 0.01 65);
+  --sidebar-border: oklch(0.32 0.07 65);
+  --sidebar-ring: oklch(0.78 0.17 72);
 }
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-montserrat), var(--font-geist-sans), sans-serif;
+  --font-cinzel: var(--font-cinzel), serif;
+  --font-montserrat: var(--font-montserrat), sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-marshathedead: 'MarshalTheDead', sans-serif;
   --font-eclipse: 'Eclipse', sans-serif;
+  --font-yuji-boku: var(--font-yuji-boku), serif;
+  --font-ultra-brush: var(--font-the-ultra-brush), cursive, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -137,28 +141,108 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground selection:bg-amber-500/30 selection:text-amber-200 font-sans;
   }
 }
 
-/* Added custom styles for martial arts theme */
+/* Martial Arts Traditional Aesthetics */
 .paint-splash {
-  background-image: radial-gradient(circle at 20% 80%, rgba(255, 111, 0, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 171, 64, 0.2) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(255, 111, 0, 0.1) 0%, transparent 50%);
+  background-image: 
+    radial-gradient(circle at 15% 25%, rgba(197, 22, 29, 0.22) 0%, transparent 45%),
+    radial-gradient(circle at 85% 25%, rgba(245, 183, 49, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 50% 60%, rgba(189, 24, 30, 0.15) 0%, transparent 60%),
+    radial-gradient(circle at 50% 10%, rgba(245, 183, 49, 0.12) 0%, transparent 40%);
 }
 
 .hero-text {
-  text-shadow: 0 0 20px rgba(255, 111, 0, 0.5);
+  text-shadow: 0 0 35px rgba(245, 183, 49, 0.65), 0 0 10px rgba(197, 22, 29, 0.5);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fff2a8 0%, #f5b731 40%, #e5a93b 70%, #ffd978 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(245, 183, 49, 0.4));
+}
+
+.crimson-gradient-text {
+  background: linear-gradient(135deg, #ff7170 0%, #e6232e 50%, #9e0e15 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .glow-border {
-  box-shadow: 0 0 20px rgba(255, 111, 0, 0.3);
+  box-shadow: 0 0 25px rgba(245, 183, 49, 0.35), inset 0 0 15px rgba(245, 183, 49, 0.15);
+}
+
+.glow-border-crimson {
+  box-shadow: 0 0 30px rgba(197, 22, 29, 0.4), inset 0 0 15px rgba(197, 22, 29, 0.2);
+}
+
+/* Crimson Brush Banner matching the flyer */
+.brush-banner {
+  background: linear-gradient(90deg, transparent 0%, rgba(189, 24, 30, 0.85) 15%, #b2141a 50%, rgba(189, 24, 30, 0.85) 85%, transparent 100%);
+  box-shadow: 0 8px 30px rgba(189, 24, 30, 0.35);
+  position: relative;
+}
+
+.brush-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Chinese Traditional Corner Ornament / Border */
+.chinese-card-frame {
+  position: relative;
+  background: linear-gradient(145deg, rgba(20, 16, 17, 0.85) 0%, rgba(12, 10, 11, 0.95) 100%);
+  border: 1px solid rgba(245, 183, 49, 0.35);
+}
+
+.chinese-card-frame::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid #f5b731;
+  border-left: 2px solid #f5b731;
+  pointer-events: none;
+}
+
+.chinese-card-frame::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 14px;
+  height: 14px;
+  border-bottom: 2px solid #f5b731;
+  border-right: 2px solid #f5b731;
+  pointer-events: none;
+}
+
+/* Hanko / Red Seal Stamp */
+.hanko-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #a8171d;
+  color: #fff;
+  border: 2px solid #d42b32;
+  box-shadow: 0 0 10px rgba(168, 23, 29, 0.5);
+  font-family: var(--font-yuji-boku), serif;
+  font-weight: bold;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 2px;
 }
 
 @keyframes float-medium {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0px);
   }
   50% {
@@ -171,8 +255,7 @@
 }
 
 @keyframes float-slow {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0px);
   }
   50% {
@@ -185,8 +268,7 @@
 }
 
 @keyframes float-fast {
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0px);
   }
   50% {
@@ -200,4 +282,186 @@
 
 .font-marshathedead {
   font-family: var(--font-marshathedead);
+}
+
+.font-yuji-boku {
+  font-family: var(--font-yuji-boku), serif;
+}
+
+.font-cinzel {
+  font-family: var(--font-cinzel), serif;
+}
+
+.font-montserrat {
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+/* Gold Metallic Gradient Text (Flyer Style) */
+.gold-metallic-text {
+  background: linear-gradient(135deg, #FFF1B9 0%, #D4AF37 45%, #997A00 85%, #FFEFA8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px rgba(212, 175, 55, 0.45));
+}
+
+/* Martial Dividers with central diamond ornament */
+.gold-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #D4AF37 50%, transparent 100%);
+  margin: 2rem 0;
+}
+
+.gold-divider::after {
+  content: "◆";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #D4AF37;
+  font-size: 0.75rem;
+  background: #050505;
+  padding: 0 0.5rem;
+}
+
+/* Straight Chinese Card Container with Ornaments */
+.chinese-card-straight {
+  position: relative;
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid #D4AF37;
+  backdrop-filter: blur(12px);
+}
+
+.chinese-card-straight::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid #FFF1B9;
+  border-left: 2px solid #FFF1B9;
+  pointer-events: none;
+}
+
+.chinese-card-straight::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 14px;
+  height: 14px;
+  border-bottom: 2px solid #FFF1B9;
+  border-right: 2px solid #FFF1B9;
+  pointer-events: none;
+}
+
+/* Plaque Banner header (like ASOCIACIÓN LONG HU HE and CATEGORÍAS / DISCIPLINAS) */
+.plaque-banner {
+  background: linear-gradient(180deg, #120e0e 0%, #050505 100%);
+  border: 1.5px solid #D4AF37;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(212, 175, 55, 0.15);
+  position: relative;
+}
+
+/* UI Buttons defined in Style Guide */
+.btn-martial-primary {
+  background: linear-gradient(180deg, #7A0010 0%, #55000B 100%);
+  color: #FDFDFD;
+  font-family: var(--font-cinzel), serif;
+  font-weight: 700;
+  border: 1px solid #D4AF37;
+  box-shadow: 0 4px 15px rgba(122, 0, 16, 0.5), inset 0 1px 0 rgba(255, 241, 185, 0.25);
+  transition: all 0.25s ease-in-out;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-martial-primary:hover {
+  background: linear-gradient(180deg, #C8102E 0%, #9B0B20 100%);
+  color: #FFF1B9;
+  border-color: #FFF1B9;
+  box-shadow: 0 6px 25px rgba(200, 16, 46, 0.65), 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+.btn-martial-secondary {
+  background: transparent;
+  color: #D4AF37;
+  font-family: var(--font-cinzel), serif;
+  font-weight: 600;
+  border: 1px solid #D4AF37;
+  transition: all 0.25s ease-in-out;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-martial-secondary:hover {
+  background: rgba(212, 175, 55, 0.12);
+  color: #FFF1B9;
+  border-color: #FFF1B9;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Form Inputs defined in Style Guide */
+.martial-input {
+  background-color: #000000 !important;
+  border: none !important;
+  border-bottom: 2px solid #555555 !important;
+  border-radius: 0px !important;
+  color: #FDFDFD !important;
+  font-family: var(--font-montserrat), sans-serif;
+  padding: 0.65rem 0.75rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.martial-input:focus {
+  border-bottom-color: #D4AF37 !important;
+  box-shadow: 0 4px 12px -2px rgba(212, 175, 55, 0.35) !important;
+  outline: none !important;
+}
+
+.martial-label {
+  color: #D4AF37;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Chinese Knot Red Circular Bullet */
+.chinese-knot-bullet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #C8102E 0%, #7A0010 100%);
+  border: 1px solid #D4AF37;
+  box-shadow: 0 0 8px rgba(200, 16, 46, 0.6);
+  color: #FFF1B9;
+  font-size: 0.7rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* Red Seal / Hanko Stamp */
+.hanko-stamp-large {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: var(--font-yuji-boku), serif;
+  border: 2px solid #C8102E;
+  color: #C8102E;
+  background: rgba(122, 0, 16, 0.2);
+  box-shadow: inset 0 0 8px rgba(200, 16, 46, 0.25), 0 0 12px rgba(200, 16, 46, 0.25);
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  padding: 0.35rem 0.25rem;
 }
