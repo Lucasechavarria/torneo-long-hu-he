@@ -104,13 +104,14 @@ export function TournamentInfo() {
             return (
               <motion.div
                 key={item.title}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.06, duration: 0.4 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ delay: (index % 4) * 0.08, duration: 0.45 }}
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.96 }}
               >
-                <div className="h-full chinese-card-straight p-5 flex flex-col justify-between overflow-hidden relative group hover:border-[#FFF1B9] transition-all">
+                <div className="h-full chinese-card-straight p-5 flex flex-col justify-between overflow-hidden relative group hover:border-[#FFF1B9] active:border-[#FFF1B9] active:shadow-[0_0_20px_rgba(212,175,55,0.35)] transition-all cursor-pointer select-none">
                   {/* Watermark Chinese Character */}
                   <span className="absolute -top-3 -right-2 text-6xl font-yuji-boku text-[#D4AF37]/10 group-hover:text-[#D4AF37]/20 transition-colors pointer-events-none select-none">
                     {item.kanji}
@@ -118,7 +119,7 @@ export function TournamentInfo() {
 
                   <div className="text-center pb-2 relative z-10">
                     {/* Red Circular Knot Emblem */}
-                    <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-gradient-to-br from-[#C8102E] via-[#7A0010] to-black p-0.5 shadow-lg border border-[#D4AF37]/50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <div className="mx-auto mb-3 w-12 h-12 rounded-full bg-gradient-to-br from-[#C8102E] via-[#7A0010] to-black p-0.5 shadow-lg border border-[#D4AF37]/50 flex items-center justify-center group-hover:scale-110 group-active:scale-105 transition-transform duration-300">
                       <div className="w-full h-full rounded-full bg-black/60 flex items-center justify-center">
                         <Icon className="w-5 h-5 text-[#FFF1B9]" />
                       </div>
@@ -139,7 +140,7 @@ export function TournamentInfo() {
                   </div>
 
                   {/* Bottom Accent line */}
-                  <div className="mt-4 h-0.5 w-full bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent group-hover:via-[#FFF1B9] transition-colors" />
+                  <div className="mt-4 h-0.5 w-full bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent group-hover:via-[#FFF1B9] group-active:via-[#FFF1B9] transition-colors" />
                 </div>
               </motion.div>
             )
@@ -150,10 +151,11 @@ export function TournamentInfo() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-14 text-center"
+          viewport={{ once: true, margin: "-40px" }}
+          whileTap={{ scale: 0.98 }}
+          className="mt-14 text-center cursor-default select-none"
         >
-          <div className="chinese-card-straight max-w-3xl mx-auto p-8 shadow-2xl relative overflow-hidden">
+          <div className="chinese-card-straight max-w-3xl mx-auto p-8 shadow-2xl relative overflow-hidden active:border-[#FFF1B9] transition-colors">
             <span className="text-xs uppercase tracking-[0.3em] text-[#D4AF37] font-bold block mb-2 font-cinzel">
               Confraternidad Marcial
             </span>

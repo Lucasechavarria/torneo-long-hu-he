@@ -167,10 +167,12 @@ export function InteractiveTournamentBracket() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.2 }}
+                  whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.96 }}
                   onHoverStart={() => setHoveredCompetitor(competitor.id)}
                   onHoverEnd={() => setHoveredCompetitor(null)}
                 >
-                  <div className="chinese-card-straight p-4 border-[#D4AF37]/30 hover:border-[#FFF1B9] transition-all duration-300 shadow-md">
+                  <div className="chinese-card-straight p-4 border-[#D4AF37]/30 hover:border-[#FFF1B9] active:border-[#FFF1B9] active:shadow-[0_0_15px_rgba(212,175,55,0.35)] transition-all duration-300 shadow-md cursor-pointer select-none">
                     <div className="space-y-2">
                       <div className="flex items-center gap-3">
                         <motion.div

@@ -28,36 +28,84 @@ export function AnimatedBackground() {
     if (!ctx) return
 
     let animationId: number
-    let width = (canvas.width = window.innerWidth)
-    let height = (canvas.height = window.innerHeight)
+    let width = window.innerWidth
+    let height = window.innerHeight
+    const isMobile = width < 768
+
+    // En pantallas Retina móviles calibramos DPR, en escritorio mantenemos tamaño 1:1 nativo original
+    let dpr = isMobile ? Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 2) : 1
+
+    // Brisa al tacto (Touch Breeze) exclusiva para pantallas táctiles móviles
+    let breezeX = 0
+    let breezeY = 0
+    let lastTouchX = 0
+    let lastTouchY = 0
+
+    const updateCanvasDimensions = () => {
+      width = window.innerWidth
+      height = window.innerHeight
+      const currentIsMobile = width < 768
+      dpr = currentIsMobile ? Math.min(window.devicePixelRatio || 1, 2) : 1
+      canvas.width = Math.floor(width * dpr)
+      canvas.height = Math.floor(height * dpr)
+      canvas.style.width = `${width}px`
+      canvas.style.height = `${height}px`
+    }
+
+    updateCanvasDimensions()
 
     const handleResize = () => {
-      if (!canvas) return
-      width = canvas.width = window.innerWidth
-      height = canvas.height = window.innerHeight
+      updateCanvasDimensions()
+    }
+
+    // Touch breeze event handlers (solo activos con gestos táctiles en móvil)
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        lastTouchX = e.touches[0].clientX
+        lastTouchY = e.touches[0].clientY
+      }
+    }
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0]
+        const dx = touch.clientX - lastTouchX
+        const dy = touch.clientY - lastTouchY
+        // Aceleración suave en la dirección del desplazamiento táctil
+        breezeX += Math.max(-2, Math.min(2, dx * 0.06))
+        breezeY += Math.max(-2, Math.min(2, dy * 0.06))
+        lastTouchX = touch.clientX
+        lastTouchY = touch.clientY
+      }
     }
 
     window.addEventListener("resize", handleResize)
+    if (isMobile) {
+      window.addEventListener("touchstart", handleTouchStart, { passive: true })
+      window.addEventListener("touchmove", handleTouchMove, { passive: true })
+    }
 
-    // Crimson blossom petals & golden martial embers
-    const particles: Petal[] = []
-    const totalPetals = Math.min(35, Math.floor(width / 40))
-    const totalEmbers = Math.min(25, Math.floor(width / 50))
+    // Densidad: en escritorio idéntica al original; en móvil mínimo 22 pétalos y 18 chispas
+    const totalPetals = isMobile ? 22 : Math.min(35, Math.floor(width / 40))
+    const totalEmbers = isMobile ? 18 : Math.min(25, Math.floor(width / 50))
 
     const petalColors = [
-      "rgba(197, 22, 29, 0.75)",
-      "rgba(168, 23, 29, 0.7)",
-      "rgba(220, 38, 38, 0.65)",
-      "rgba(139, 14, 20, 0.8)",
+      "rgba(220, 38, 38, 0.85)",
+      "rgba(200, 16, 46, 0.90)",
+      "rgba(185, 28, 28, 0.85)",
+      "rgba(239, 68, 68, 0.80)",
+      "rgba(153, 27, 27, 0.95)",
     ]
 
     const emberColors = [
-      "rgba(245, 183, 49, 0.85)",
-      "rgba(255, 215, 0, 0.8)",
-      "rgba(251, 191, 36, 0.75)",
+      "rgba(255, 215, 0, 0.95)",
+      "rgba(245, 183, 49, 0.90)",
+      "rgba(251, 191, 36, 0.85)",
     ]
 
-    // Create Petals
+    const particles: Petal[] = []
+
+    // Crear Pétalos
     for (let i = 0; i < totalPetals; i++) {
       particles.push({
         type: "petal",
@@ -65,8 +113,8 @@ export function AnimatedBackground() {
         y: Math.random() * height,
         vx: 0.3 + Math.random() * 0.7,
         vy: 0.8 + Math.random() * 1.2,
-        size: 5 + Math.random() * 7,
-        opacity: 0.35 + Math.random() * 0.45,
+        size: isMobile ? 6 + Math.random() * 6.5 : 5 + Math.random() * 7,
+        opacity: 0.4 + Math.random() * 0.45,
         rotation: Math.random() * Math.PI * 2,
         rotationSpeed: (Math.random() - 0.5) * 0.03,
         swingAmplitude: 1 + Math.random() * 2,
@@ -76,16 +124,16 @@ export function AnimatedBackground() {
       })
     }
 
-    // Create Embers
+    // Crear Chispas Doradas (Embers)
     for (let i = 0; i < totalEmbers; i++) {
       particles.push({
         type: "ember",
         x: Math.random() * width,
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 0.4,
-        vy: -(0.5 + Math.random() * 1.0), // float upwards
-        size: 1.5 + Math.random() * 2.5,
-        opacity: 0.2 + Math.random() * 0.6,
+        vy: -(0.5 + Math.random() * 1.0),
+        size: isMobile ? 1.8 + Math.random() * 2.5 : 1.5 + Math.random() * 2.5,
+        opacity: 0.25 + Math.random() * 0.55,
         rotation: 0,
         rotationSpeed: 0,
         swingAmplitude: 0.5 + Math.random() * 1,
@@ -102,11 +150,11 @@ export function AnimatedBackground() {
       ctx.fillStyle = p.color
       ctx.globalAlpha = p.opacity
 
-      // Organic curved petal shape
+      // Curva orgánica de pétalo de flor de ciruelo / cerezo oriental
       ctx.beginPath()
       ctx.moveTo(0, -p.size)
-      ctx.bezierCurveTo(p.size * 0.8, -p.size * 0.6, p.size * 0.9, p.size * 0.6, 0, p.size)
-      ctx.bezierCurveTo(-p.size * 0.9, p.size * 0.6, -p.size * 0.8, -p.size * 0.6, 0, -p.size)
+      ctx.bezierCurveTo(p.size * 0.85, -p.size * 0.6, p.size * 0.95, p.size * 0.6, 0, p.size)
+      ctx.bezierCurveTo(-p.size * 0.95, p.size * 0.6, -p.size * 0.85, -p.size * 0.6, 0, -p.size)
       ctx.fill()
       ctx.restore()
     }
@@ -116,7 +164,7 @@ export function AnimatedBackground() {
       ctx.globalAlpha = p.opacity
       ctx.fillStyle = p.color
       ctx.shadowColor = "#f5b731"
-      ctx.shadowBlur = 8
+      ctx.shadowBlur = isMobile ? 10 : 8
       ctx.beginPath()
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
       ctx.fill()
@@ -124,43 +172,62 @@ export function AnimatedBackground() {
     }
 
     const render = () => {
-      ctx.clearRect(0, 0, width, height)
+      // Limpiar en coordenadas nativas de alta resolución
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      // Guardar contexto y escalar por DPR para resolución Retina
+      ctx.save()
+      ctx.scale(dpr, dpr)
+
+      // Amortiguación suave de la brisa al tacto
+      breezeX *= 0.93
+      breezeY *= 0.93
 
       particles.forEach((p) => {
         p.swingAngle += p.swingSpeed
         const swing = Math.sin(p.swingAngle) * p.swingAmplitude
 
         if (p.type === "petal") {
-          p.x += p.vx + swing * 0.3
-          p.y += p.vy
+          p.x += p.vx + swing * 0.35 + breezeX
+          p.y += p.vy + breezeY * 0.5
           p.rotation += p.rotationSpeed
 
-          // Wrap edges
-          if (p.y > height + 20) {
-            p.y = -20
+          // Envoltura de bordes con margen de seguridad
+          if (p.y > height + 25) {
+            p.y = -25
             p.x = Math.random() * width
           }
-          if (p.x > width + 20) {
-            p.x = -20
+          if (p.y < -30) {
+            p.y = height + 20
+          }
+          if (p.x > width + 25) {
+            p.x = -25
+          }
+          if (p.x < -25) {
+            p.x = width + 25
           }
 
           drawPetal(p)
         } else {
-          // Ember floats upwards
-          p.x += p.vx + swing * 0.2
-          p.y += p.vy
+          // Chispa asciende con vaivén dorado y reacciona a la brisa
+          p.x += p.vx + swing * 0.25 + breezeX * 0.7
+          p.y += p.vy + breezeY * 0.8
 
-          if (p.y < -20) {
-            p.y = height + 20
+          if (p.y < -25) {
+            p.y = height + 25
             p.x = Math.random() * width
           }
-          if (p.x < -20) p.x = width + 20
-          if (p.x > width + 20) p.x = -20
+          if (p.y > height + 30) {
+            p.y = -20
+          }
+          if (p.x < -25) p.x = width + 25
+          if (p.x > width + 25) p.x = -25
 
           drawEmber(p)
         }
       })
 
+      ctx.restore()
       animationId = requestAnimationFrame(render)
     }
 
@@ -169,13 +236,17 @@ export function AnimatedBackground() {
     return () => {
       cancelAnimationFrame(animationId)
       window.removeEventListener("resize", handleResize)
+      if (isMobile) {
+        window.removeEventListener("touchstart", handleTouchStart)
+        window.removeEventListener("touchmove", handleTouchMove)
+      }
     }
   }, [])
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-[1] opacity-80"
+      className="fixed inset-0 pointer-events-none z-[1] opacity-90"
       style={{ background: "transparent" }}
     />
   )

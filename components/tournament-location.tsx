@@ -24,7 +24,7 @@ export function TournamentLocation() {
         </div>
 
         {/* Main Location Card */}
-        <div className="chinese-card-straight p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+        <div className="chinese-card-straight p-4 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Column: Venue Details */}
             <div className="lg:col-span-7 space-y-6">
@@ -85,30 +85,34 @@ export function TournamentLocation() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-4 pt-2">
-                <a
-                  href={googleMapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block"
-                >
-                  <Button className="btn-martial-primary px-6 py-3 cursor-pointer shadow-xl flex items-center gap-2">
-                    <Navigation className="w-4 h-4 mr-1" />
-                    Cómo Llegar en Google Maps
-                  </Button>
-                </a>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 w-full">
+                <motion.div className="w-full sm:w-auto" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
+                  <a
+                    href={googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full"
+                  >
+                    <Button className="btn-martial-primary w-full px-4 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm cursor-pointer shadow-xl flex items-center justify-center gap-2 text-center h-auto min-h-[44px]">
+                      <Navigation className="w-4 h-4 shrink-0 text-[#FFF1B9]" />
+                      <span className="leading-snug">Cómo Llegar en Google Maps</span>
+                    </Button>
+                  </a>
+                </motion.div>
 
-                <a
-                  href="https://wa.me/541168774097?text=Hola,%20quisiera%20consultar%20sobre%20el%20Torneo%20Abierto%20de%20Artes%20Marciales%202026"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block"
-                >
-                  <Button className="btn-martial-secondary px-6 py-3 cursor-pointer flex items-center gap-2">
-                    <Phone className="w-4 h-4 mr-1 text-[#D4AF37]" />
-                    Contacto WhatsApp: 11 6877-4097
-                  </Button>
-                </a>
+                <motion.div className="w-full sm:w-auto" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
+                  <a
+                    href="https://wa.me/541168774097?text=Hola,%20quisiera%20consultar%20sobre%20el%20Torneo%20Abierto%20de%20Artes%20Marciales%202026"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full"
+                  >
+                    <Button className="btn-martial-secondary w-full px-4 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm cursor-pointer flex items-center justify-center gap-2 text-center h-auto min-h-[44px]">
+                      <Phone className="w-4 h-4 shrink-0 text-[#D4AF37]" />
+                      <span className="leading-snug"><span className="hidden sm:inline">Contacto </span>WhatsApp: 11 6877-4097</span>
+                    </Button>
+                  </a>
+                </motion.div>
               </div>
             </div>
 

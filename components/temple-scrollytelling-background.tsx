@@ -12,6 +12,16 @@ export function TempleScrollytellingBackground() {
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 })
   const [isLoaded, setIsLoaded] = useState(false)
 
+  // Detección reactiva de vista móvil (< 768px)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
   // Hook de progreso de scroll con física de inercia y amortiguación fluida
   const { scrollYProgress } = useScroll()
   const smoothProgress = useSpring(scrollYProgress, {
@@ -20,21 +30,32 @@ export function TempleScrollytellingBackground() {
     restDelta: 0.001,
   })
 
-  // 1. ZOOM GRADUAL CONTINUO (De plano general 1.0x hasta plano detalle 2.25x en el templo)
-  const cameraZoom = useTransform(smoothProgress, [0, 0.35, 0.7, 1], [1.0, 1.45, 1.85, 2.25])
+  // 1. ZOOM GRADUAL CONTINUO
+  // En escritorio: 1.0x a 2.25x. En móviles: limitado a 1.0x a 1.30x para mantener siempre el templo majestuoso y visible
+  const desktopZoom = useTransform(smoothProgress, [0, 0.35, 0.7, 1], [1.0, 1.45, 1.85, 2.25])
+  const mobileZoom = useTransform(smoothProgress, [0, 0.35, 0.7, 1], [1.0, 1.10, 1.20, 1.30])
+  const cameraZoom = isMobile ? mobileZoom : desktopZoom
 
   // 2. TRAYECTORIA Y DESPLAZAMIENTO DEL ENFOQUE (X, Y)
-  // Al scrollear, la cámara vuela desde la vista panorámica general hacia la escalinata y el patio central del templo
-  const cameraPanX = useTransform(smoothProgress, [0, 0.35, 0.7, 1], ["0%", "-3.5%", "-7%", "-10%"])
-  const cameraPanY = useTransform(smoothProgress, [0, 0.35, 0.7, 1], ["0%", "-4%", "-6%", "-7.5%"])
+  // Anclado en la pagoda y escalinata principal del templo
+  const desktopPanX = useTransform(smoothProgress, [0, 0.35, 0.7, 1], ["0%", "-3.5%", "-7%", "-10%"])
+  const mobilePanX = useTransform(smoothProgress, [0, 0.35, 0.7, 1], ["0%", "-1%", "-2%", "-2%"])
+  const cameraPanX = isMobile ? mobilePanX : desktopPanX
+
+  const desktopPanY = useTransform(smoothProgress, [0, 0.35, 0.7, 1], ["0%", "-4%", "-6%", "-7.5%"])
+  const mobilePanY = useTransform(smoothProgress, [0, 0.35, 0.7, 1], ["0%", "-2%", "-3.5%", "-5%"])
+  const cameraPanY = isMobile ? mobilePanY : desktopPanY
 
   // 3. CAMBIO GRADUAL DEL ÁNGULO DE VISTA (Rotación 3D)
-  // Pitch (inclinación vertical): al inicio nivelado, luego desciende en vuelo hacia la montaña y finalmente contrapicado mirando la pagoda
-  const cameraRotateX = useTransform(smoothProgress, [0, 0.35, 0.7, 1], [0, 2.8, 1.5, -2.0])
-  // Yaw (paneo angular lateral): ligera vista angular para apreciar la volumetría de los tejados y acantilados
-  const cameraRotateY = useTransform(smoothProgress, [0, 0.35, 0.7, 1], [0, -1.8, -1.2, 0])
+  const desktopRotateX = useTransform(smoothProgress, [0, 0.35, 0.7, 1], [0, 2.8, 1.5, -2.0])
+  const mobileRotateX = useTransform(smoothProgress, [0, 0.35, 0.7, 1], [0, 1.2, 0.6, -0.8])
+  const cameraRotateX = isMobile ? mobileRotateX : desktopRotateX
 
-  // Seguimiento suave del cursor del mouse para micro-paralaje 3D interactivo
+  const desktopRotateY = useTransform(smoothProgress, [0, 0.35, 0.7, 1], [0, -1.8, -1.2, 0])
+  const mobileRotateY = useTransform(smoothProgress, [0, 0.35, 0.7, 1], [0, -0.6, -0.3, 0])
+  const cameraRotateY = isMobile ? mobileRotateY : desktopRotateY
+
+  // Seguimiento suave del cursor del mouse para micro-paralaje 3D interactivo (en escritorio)
   useEffect(() => {
     let animationFrameId: number
     let targetX = 0
@@ -43,6 +64,7 @@ export function TempleScrollytellingBackground() {
     let currentY = 0
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (window.innerWidth < 768) return
       // Coordenadas normalizadas (-1 a 1)
       targetX = (e.clientX / window.innerWidth - 0.5) * 2
       targetY = (e.clientY / window.innerHeight - 0.5) * 2
@@ -91,7 +113,7 @@ export function TempleScrollytellingBackground() {
           priority
           quality={95}
           onLoad={() => setIsLoaded(true)}
-          className={`object-cover object-center scale-105 transition-opacity duration-1000 ${
+          className={`object-cover ${isMobile ? "object-[50%_35%]" : "object-center"} scale-105 transition-opacity duration-1000 ${
             isLoaded ? "opacity-100" : "opacity-0"
           }`}
         />

@@ -78,33 +78,88 @@ export function TournamentHero() {
 
         {/* School Logo & Vertical Right Margin Ideograms */}
         <div className="relative z-10 w-full max-w-6xl mx-auto flex items-center justify-center my-2">
-          {/* Central Logo */}
-          <motion.div
-            ref={logoRef}
-            className="cursor-pointer"
-            style={!isMobile ? { rotateX, rotateY } : {}}
-            whileHover={{ scale: 1.03 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[440px] lg:h-[440px] mx-auto">
-              <Image
-                src="/Logo-dorado.webp"
-                alt="Logo oficial de la Asociación Long Hu He"
-                width={540}
-                height={540}
-                priority
-                className="drop-shadow-[0_15px_35px_rgba(212,175,55,0.45)] object-contain w-full h-full"
-              />
-            </div>
-          </motion.div>
+          {/* Central Logo: En móvil levitación y respiración continua; en escritorio inclinación 3D reactiva al mouse */}
+          {isMobile ? (
+            <motion.div
+              ref={logoRef}
+              className="cursor-pointer relative"
+              animate={{
+                y: [-6, 6, -6],
+                rotateZ: [-1.2, 1.2, -1.2],
+                filter: [
+                  "drop-shadow(0 12px 28px rgba(212,175,55,0.40))",
+                  "drop-shadow(0 18px 42px rgba(212,175,55,0.70))",
+                  "drop-shadow(0 12px 28px rgba(212,175,55,0.40))",
+                ],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              whileTap={{ scale: 0.96 }}
+            >
+              <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[440px] lg:h-[440px] mx-auto">
+                <Image
+                  src="/Logo-dorado.webp"
+                  alt="Logo oficial de la Asociación Long Hu He"
+                  width={540}
+                  height={540}
+                  priority
+                  className="drop-shadow-[0_15px_35px_rgba(212,175,55,0.45)] object-contain w-full h-full"
+                />
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              ref={logoRef}
+              className="cursor-pointer"
+              style={{ rotateX, rotateY }}
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[440px] lg:h-[440px] mx-auto">
+                <Image
+                  src="/Logo-dorado.webp"
+                  alt="Logo oficial de la Asociación Long Hu He"
+                  width={540}
+                  height={540}
+                  priority
+                  className="drop-shadow-[0_15px_35px_rgba(212,175,55,0.45)] object-contain w-full h-full"
+                />
+              </div>
+            </motion.div>
+          )}
 
           {/* Vertical Ideograms at Logo Height on Right Margin: Dragón (龍), Tigre (虎), Grulla (鶴) */}
           <div className="absolute right-3 sm:right-6 md:right-10 lg:right-14 xl:right-16 top-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none select-none z-20">
-            <div className="flex flex-col items-center gap-2 sm:gap-4 md:gap-5 font-yuji-boku text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#FFF1B9] drop-shadow-[0_2px_14px_rgba(212,175,55,0.55)] leading-tight">
-              <span title="Dragón (Lóng)">龍</span>
-              <span title="Tigre (Hǔ)">虎</span>
-              <span title="Grulla (Hè)">鶴</span>
-            </div>
+            {isMobile ? (
+              <motion.div
+                animate={{
+                  filter: [
+                    "drop-shadow(0 2px 10px rgba(212,175,55,0.45))",
+                    "drop-shadow(0 2px 22px rgba(255,215,0,0.85))",
+                    "drop-shadow(0 2px 10px rgba(212,175,55,0.45))",
+                  ],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="flex flex-col items-center gap-2 sm:gap-4 md:gap-5 font-yuji-boku text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#FFF1B9] drop-shadow-[0_2px_14px_rgba(212,175,55,0.55)] leading-tight"
+              >
+                <span title="Dragón (Lóng)">龍</span>
+                <span title="Tigre (Hǔ)">虎</span>
+                <span title="Grulla (Hè)">鶴</span>
+              </motion.div>
+            ) : (
+              <div className="flex flex-col items-center gap-2 sm:gap-4 md:gap-5 font-yuji-boku text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#FFF1B9] drop-shadow-[0_2px_14px_rgba(212,175,55,0.55)] leading-tight">
+                <span title="Dragón (Lóng)">龍</span>
+                <span title="Tigre (Hǔ)">虎</span>
+                <span title="Grulla (Hè)">鶴</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -188,23 +243,30 @@ export function TournamentHero() {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-3xl mx-auto mb-6"
           >
-            <div className="chinese-card-straight p-3.5 sm:p-4 flex items-center justify-center gap-3">
+            <motion.div
+              whileTap={{ scale: 0.96 }}
+              className="chinese-card-straight p-3.5 sm:p-4 flex items-center justify-center gap-3 cursor-default"
+            >
               <Calendar className="w-5 h-5 text-[#D4AF37] shrink-0" />
               <div className="text-left font-montserrat">
                 <span className="text-[10px] uppercase text-[#D4AF37] block font-semibold tracking-wider">Fecha</span>
                 <span className="text-sm sm:text-base font-bold text-[#FDFDFD]">22 Noviembre 2026</span>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="chinese-card-straight p-3.5 sm:p-4 flex items-center justify-center gap-3">
+            <motion.div
+              whileTap={{ scale: 0.96 }}
+              className="chinese-card-straight p-3.5 sm:p-4 flex items-center justify-center gap-3 cursor-default"
+            >
               <Clock className="w-5 h-5 text-[#D4AF37] shrink-0" />
               <div className="text-left font-montserrat">
                 <span className="text-[10px] uppercase text-[#D4AF37] block font-semibold tracking-wider">Horario</span>
                 <span className="text-sm sm:text-base font-bold text-[#FDFDFD]">10:00 hs</span>
               </div>
-            </div>
+            </motion.div>
 
-            <div
+            <motion.div
+              whileTap={{ scale: 0.96 }}
               onClick={() => scrollTo("sede")}
               className="chinese-card-straight p-3.5 sm:p-4 flex items-center justify-center gap-3 cursor-pointer hover:border-[#FFF1B9] transition-colors"
             >
@@ -213,7 +275,7 @@ export function TournamentHero() {
                 <span className="text-[10px] uppercase text-[#D4AF37] block font-semibold tracking-wider">Sede Oficial</span>
                 <span className="text-sm sm:text-base font-bold text-[#FDFDFD]">Club Alberdi de Burzaco</span>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Venue Address & Welcome Text */}
@@ -246,40 +308,40 @@ export function TournamentHero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mt-6 w-full max-w-sm sm:max-w-none mx-auto"
           >
             {/* Primary Action Button: Crimson with gold border & Cinzel font */}
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+            <motion.div className="w-full sm:w-auto" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
               <Button
                 onClick={() => scrollTo("registration")}
                 size="lg"
-                className="btn-martial-primary px-8 py-6 text-sm sm:text-base cursor-pointer shadow-xl"
+                className="btn-martial-primary w-full sm:w-auto px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base cursor-pointer shadow-xl flex items-center justify-center"
               >
-                <UserPlus className="w-5 h-5 mr-2" />
+                <UserPlus className="w-5 h-5 mr-2 shrink-0" />
                 Inscribirse al Torneo
               </Button>
             </motion.div>
 
             {/* Secondary Action Button: Transparent with gold border & Cinzel font */}
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+            <motion.div className="w-full sm:w-auto" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
               <Button
                 onClick={() => scrollTo("disciplinas")}
                 size="lg"
-                className="btn-martial-secondary px-7 py-6 text-sm sm:text-base cursor-pointer"
+                className="btn-martial-secondary w-full sm:w-auto px-6 sm:px-7 py-5 sm:py-6 text-sm sm:text-base cursor-pointer flex items-center justify-center"
               >
-                <Trophy className="w-5 h-5 mr-2 text-[#D4AF37]" />
+                <Trophy className="w-5 h-5 mr-2 text-[#D4AF37] shrink-0" />
                 Ver Disciplinas
               </Button>
             </motion.div>
 
             {/* Sede CTA */}
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+            <motion.div className="w-full sm:w-auto" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
               <Button
                 onClick={() => scrollTo("sede")}
                 size="lg"
-                className="bg-black/70 hover:bg-[#7A0010]/40 text-[#FFF1B9] border border-[#D4AF37]/50 font-cinzel text-xs sm:text-sm px-6 py-6 cursor-pointer flex items-center gap-2 transition-all uppercase tracking-wider"
+                className="bg-black/70 hover:bg-[#7A0010]/40 text-[#FFF1B9] border border-[#D4AF37]/50 font-cinzel text-xs sm:text-sm px-6 py-5 sm:py-6 cursor-pointer flex items-center justify-center gap-2 transition-all uppercase tracking-wider w-full sm:w-auto"
               >
-                <Navigation className="w-4 h-4 text-[#C8102E]" />
+                <Navigation className="w-4 h-4 text-[#C8102E] shrink-0" />
                 Cómo Llegar
               </Button>
             </motion.div>
