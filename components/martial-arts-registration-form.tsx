@@ -254,10 +254,6 @@ export default function MartialArtsRegistrationForm() {
         Arqueria: participant.archery ? 'Sí' : 'No',
         Sumo: participant.sumo ? 'Sí' : 'No',
         Peso_Kg: participant.sumo ? `${participant.weightKg} kg` : '',
-        Categorias_Especiales: [
-          participant.archery ? 'Arquería' : '',
-          participant.sumo ? `Sumo (${participant.weightKg} kg)` : ''
-        ].filter(Boolean).join(', ') || 'No',
         Timestamp: timestamp,
         ID_Registro: `${registrationId}_P${index + 1}`
       }));
