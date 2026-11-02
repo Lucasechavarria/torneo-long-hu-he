@@ -88,6 +88,8 @@ export function InteractiveTournamentBracket() {
     "Formas en Equipo",
     "Combate por Equipos",
     "Tai Chi",
+    "Arquería",
+    "Sumo",
   ];
 
   const filteredCompetitors =

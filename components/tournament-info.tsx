@@ -11,7 +11,9 @@ import {
   Users, 
   Swords, 
   Wind,
-  Trophy
+  Trophy,
+  Crosshair,
+  Scale
 } from "lucide-react"
 
 const officialDisciplines = [
@@ -79,6 +81,24 @@ const officialDisciplines = [
     kanji: "极",
     color: "from-amber-400 to-yellow-500",
   },
+  {
+    icon: Crosshair,
+    title: "Arquería",
+    subtitle: "Categoría Especial · Tiro con Arco",
+    description: "Precisión, templanza, postura marcial y dominio técnico del tiro con arco en competencia de puntería.",
+    kanji: "弓",
+    color: "from-amber-500 to-red-600",
+    isSpecial: true,
+  },
+  {
+    icon: Scale,
+    title: "Sumo",
+    subtitle: "Categoría Especial · Combate por Peso",
+    description: "Fuerza, equilibrio y empuje táctico dentro del área de combate, clasificado según el peso corporal (kg) del atleta.",
+    kanji: "力",
+    color: "from-red-600 to-amber-500",
+    isSpecial: true,
+  },
 ]
 
 export function TournamentInfo() {
@@ -97,13 +117,15 @@ export function TournamentInfo() {
           </p>
         </div>
 
-        {/* 8 Disciplines Interactive Grid with Cards */}
+        {/* 10 Disciplines Interactive Grid with Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {officialDisciplines.map((item, index) => {
             const Icon = item.icon
+            const isFirstOfLastPair = index === 8
             return (
               <motion.div
                 key={item.title}
+                className={isFirstOfLastPair ? "lg:col-start-2" : ""}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-30px" }}
@@ -112,6 +134,13 @@ export function TournamentInfo() {
                 whileTap={{ scale: 0.96 }}
               >
                 <div className="h-full chinese-card-straight p-5 flex flex-col justify-between overflow-hidden relative group hover:border-[#FFF1B9] active:border-[#FFF1B9] active:shadow-[0_0_20px_rgba(212,175,55,0.35)] transition-all cursor-pointer select-none">
+                  {/* Special Category Badge */}
+                  {"isSpecial" in item && item.isSpecial && (
+                    <span className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 bg-[#7A0010]/90 border border-[#D4AF37]/60 text-[9px] font-bold uppercase tracking-widest text-[#FFF1B9] font-cinzel">
+                      Especial
+                    </span>
+                  )}
+
                   {/* Watermark Chinese Character */}
                   <span className="absolute -top-3 -right-2 text-6xl font-yuji-boku text-[#D4AF37]/10 group-hover:text-[#D4AF37]/20 transition-colors pointer-events-none select-none">
                     {item.kanji}
