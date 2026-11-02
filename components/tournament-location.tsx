@@ -25,9 +25,9 @@ export function TournamentLocation() {
 
         {/* Main Location Card */}
         <div className="chinese-card-straight p-4 sm:p-8 md:p-10 shadow-2xl relative overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Left Column: Venue Details */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 min-w-0 flex flex-col justify-between space-y-6 relative z-10">
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 bg-[#7A0010] border border-[#D4AF37] text-[11px] font-bold text-[#FFF1B9] tracking-widest uppercase font-cinzel">
                   Sede Oficial 2026
@@ -85,31 +85,31 @@ export function TournamentLocation() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 w-full">
-                <motion.div className="w-full sm:w-auto" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 w-full">
+                <motion.div className="w-full min-w-0" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
                   <a
                     href={googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full"
                   >
-                    <Button className="btn-martial-primary w-full px-4 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm cursor-pointer shadow-xl flex items-center justify-center gap-2 text-center h-auto min-h-[44px]">
+                    <Button className="btn-martial-primary w-full px-4 py-3.5 text-xs cursor-pointer shadow-xl flex items-center justify-center gap-2 text-center h-auto min-h-[48px] whitespace-normal">
                       <Navigation className="w-4 h-4 shrink-0 text-[#FFF1B9]" />
-                      <span className="leading-snug">Cómo Llegar en Google Maps</span>
+                      <span className="leading-tight">Cómo Llegar en Maps</span>
                     </Button>
                   </a>
                 </motion.div>
 
-                <motion.div className="w-full sm:w-auto" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
+                <motion.div className="w-full min-w-0" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
                   <a
                     href="https://wa.me/541168774097?text=Hola,%20quisiera%20consultar%20sobre%20el%20Torneo%20Abierto%20de%20Artes%20Marciales%202026"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full"
                   >
-                    <Button className="btn-martial-secondary w-full px-4 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm cursor-pointer flex items-center justify-center gap-2 text-center h-auto min-h-[44px]">
+                    <Button className="btn-martial-secondary w-full px-4 py-3.5 text-xs cursor-pointer flex items-center justify-center gap-2 text-center h-auto min-h-[48px] whitespace-normal bg-black/80">
                       <Phone className="w-4 h-4 shrink-0 text-[#D4AF37]" />
-                      <span className="leading-snug"><span className="hidden sm:inline">Contacto </span>WhatsApp: 11 6877-4097</span>
+                      <span className="leading-tight">WhatsApp: 11 6877-4097</span>
                     </Button>
                   </a>
                 </motion.div>
@@ -117,8 +117,8 @@ export function TournamentLocation() {
             </div>
 
             {/* Right Column: Interactive Map Preview Card */}
-            <div className="lg:col-span-5 flex flex-col h-full">
-              <div className="overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black/90 relative group flex-1 w-full min-h-[320px] sm:min-h-[380px]">
+            <div className="lg:col-span-5 min-w-0 flex flex-col">
+              <div className="overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black/90 relative group w-full h-[320px] sm:h-[360px] lg:h-full lg:min-h-[380px]">
                 {/* Map iframe for Int. C. Amenedo 280, Burzaco */}
                 <iframe
                   title="Ubicación Club Alberdi de Burzaco"
