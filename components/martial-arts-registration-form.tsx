@@ -309,11 +309,16 @@ export default function MartialArtsRegistrationForm() {
 
       {/* 1. DATOS DE LA ESCUELA */}
       <div className="chinese-card-straight p-6 sm:p-8 mb-6 shadow-2xl">
-        <div className="flex items-center gap-2 mb-4 pb-2 border-b border-[#D4AF37]/30">
-          <School className="text-[#D4AF37]" size={20} />
-          <h3 className="text-base sm:text-lg font-bold text-[#FFF1B9] font-cinzel tracking-wider uppercase">
-            1. Datos de la Escuela
-          </h3>
+        <div className="mb-4 pb-2 border-b border-[#D4AF37]/30">
+          <div className="flex items-center gap-2">
+            <School className="text-[#D4AF37] shrink-0" size={20} />
+            <h3 className="text-base sm:text-lg font-bold text-[#FFF1B9] font-cinzel tracking-wider uppercase">
+              1. Datos de la Escuela
+            </h3>
+          </div>
+          <p className="text-xs text-[#D4AF37] font-montserrat mt-1 ml-7">
+            (Solo se completa una vez por escuela, en caso de ser varios participantes)
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -402,11 +407,16 @@ export default function MartialArtsRegistrationForm() {
 
       {/* 2. DATOS DEL PARTICIPANTE */}
       <div className="chinese-card-straight p-6 sm:p-8 mb-6 shadow-2xl">
-        <div className="flex items-center gap-2 mb-4 pb-2 border-b border-[#D4AF37]/30">
-          <User className="text-[#D4AF37]" size={20} />
-          <h3 className="text-base sm:text-lg font-bold text-[#FFF1B9] font-cinzel tracking-wider uppercase">
-            2. Datos del Participante
-          </h3>
+        <div className="mb-4 pb-2 border-b border-[#D4AF37]/30">
+          <div className="flex items-center gap-2">
+            <User className="text-[#D4AF37] shrink-0" size={20} />
+            <h3 className="text-base sm:text-lg font-bold text-[#FFF1B9] font-cinzel tracking-wider uppercase">
+              2. Datos del Participante
+            </h3>
+          </div>
+          <p className="text-xs text-[#D4AF37] font-montserrat mt-1 ml-7">
+            (Complete los datos de la persona a participar en la competencia)
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
@@ -792,8 +802,8 @@ export default function MartialArtsRegistrationForm() {
             <Plus size={16} className="mr-2 text-[#D4AF37] shrink-0" />
             <span>Agregar Participante a la Lista</span>
           </Button>
-          <p className="text-[11px] text-[#FDFDFD]/75 font-montserrat text-center leading-snug">
-            Guarda al atleta actual en la lista y limpia los campos para cargar otro.
+          <p className="text-[11px] text-[#FDFDFD]/80 font-montserrat text-center leading-snug">
+            (Guarda al atleta actual en la lista y limpia los campos para cargar otro. Si tiene un participante más, vuelva a tocar este botón)
           </p>
         </div>
 
@@ -825,8 +835,8 @@ export default function MartialArtsRegistrationForm() {
               </>
             )}
           </Button>
-          <p className="text-[11px] text-[#FDFDFD]/75 font-montserrat text-center leading-snug">
-            Presione al finalizar para enviar la nómina completa de su escuela.
+          <p className="text-[11px] text-[#FDFDFD]/80 font-montserrat text-center leading-snug">
+            (Cuando termine la lista de participantes, presione al finalizar para enviar la nómina completa de su escuela)
           </p>
         </div>
       </div>
@@ -878,7 +888,7 @@ export default function MartialArtsRegistrationForm() {
 
       {/* Instructions */}
       <div className="p-4 bg-black/70 border border-[#D4AF37]/30 text-xs text-[#FDFDFD]/80 text-center font-montserrat">
-        💡 <strong>Instrucciones:</strong> Complete los datos de la escuela, luego agregue cada participante. El sistema calcula automáticamente la edad y categoría para el 22/11/2026. Al finalizar, presione "Enviar Inscripción".
+        💡 <strong>Instrucciones:</strong> Complete los datos de la escuela una sola vez, luego cargue cada participante con el botón <strong>"Agregar Participante a la Lista"</strong> (Paso 1). Cuando haya sumado a todos sus atletas, presione <strong>"Enviar Lista Completa"</strong> (Paso 2).
       </div>
     </div>
   );
