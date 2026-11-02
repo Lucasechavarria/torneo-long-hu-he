@@ -789,13 +789,13 @@ export default function MartialArtsRegistrationForm() {
         </div>
       </div>
 
-      {/* 4. BOTONES DE ACCIÓN CON EXPLICACIÓN CLARA */}
+      {/* 4 Y 5. BOTONES DE ACCIÓN CON EXPLICACIÓN CLARA */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-        {/* Botón 1: Agregar Participante */}
+        {/* Botón 1: Paso 4 - Agregar Participante */}
         <div className="p-4 bg-black/75 border border-[#D4AF37]/40 flex flex-col justify-between gap-2.5">
           <div className="flex items-center justify-between text-[11px] font-montserrat">
             <span className="text-[#D4AF37] font-bold uppercase tracking-wider font-cinzel">
-              Paso 1 · Sumar Atletas
+              4. Sumar Atletas
             </span>
             <span className="text-[#FDFDFD]/60">Uno por uno</span>
           </div>
@@ -812,11 +812,11 @@ export default function MartialArtsRegistrationForm() {
           </p>
         </div>
 
-        {/* Botón 2: Enviar Lista Completa */}
+        {/* Botón 2: Paso 5 - Enviar Lista Completa */}
         <div className="p-4 bg-black/75 border border-[#C8102E]/60 flex flex-col justify-between gap-2.5">
           <div className="flex items-center justify-between text-[11px] font-montserrat">
             <span className="text-[#FFF1B9] font-bold uppercase tracking-wider font-cinzel">
-              Paso 2 · Confirmar Todo
+              5. Confirmar Todo
             </span>
             <span className="text-[#D4AF37] font-semibold">
               {registeredParticipants.length} en lista
@@ -893,7 +893,7 @@ export default function MartialArtsRegistrationForm() {
 
       {/* Instructions */}
       <div className="p-4 bg-black/70 border border-[#D4AF37]/30 text-xs text-[#FDFDFD]/80 text-center font-montserrat">
-        💡 <strong>Instrucciones:</strong> Complete los datos de la escuela una sola vez, luego cargue cada participante con el botón <strong>"Agregar Participante a la Lista"</strong> (Paso 1). Cuando haya sumado a todos sus atletas, presione <strong>"Enviar Lista Completa"</strong> (Paso 2).
+        💡 <strong>Instrucciones:</strong> Complete los datos de la escuela una sola vez (Paso 1), luego cargue los datos y categorías de cada participante (Pasos 2 y 3) con el botón <strong>"Agregar Participante a la Lista"</strong> (Paso 4). Cuando haya sumado a todos sus atletas, presione <strong>"Enviar Lista Completa"</strong> (Paso 5).
       </div>
     </div>
   );
