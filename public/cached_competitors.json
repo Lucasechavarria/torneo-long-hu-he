@@ -1,5 +1,26 @@
 [
   {
+    "categoria": "Exhibición",
+    "generoInicial": "X",
+    "nombreCompleto": "Xiomara Uranga",
+    "dojo": "Asociación Long Hu He  R.E",
+    "timestamp": "2026-10-17T17:27:46.422Z"
+  },
+  {
+    "categoria": "Exhibición",
+    "generoInicial": "A",
+    "nombreCompleto": "Alexis  Uranga",
+    "dojo": "Asociación Long Hu He  R.E",
+    "timestamp": "2026-10-17T17:27:46.422Z"
+  },
+  {
+    "categoria": "Combate por Puntos",
+    "generoInicial": "B",
+    "nombreCompleto": "Benjamin Lombardi",
+    "dojo": "Asociación Long Hu He  R.E",
+    "timestamp": "2026-10-17T17:27:46.422Z"
+  },
+  {
     "categoria": "Combate por Puntos",
     "generoInicial": "J",
     "nombreCompleto": "Jazmín Nahiara Rapidez",
@@ -115,27 +136,6 @@
     "categoria": "Formas Tradicionales",
     "generoInicial": "T",
     "nombreCompleto": "Tania Gonzalez",
-    "dojo": "Deryon Do Kwan",
-    "timestamp": "2025-11-22T23:25:22.172Z"
-  },
-  {
-    "categoria": "Formas Tradicionales",
-    "generoInicial": "E",
-    "nombreCompleto": "Emily Gonzalez",
-    "dojo": "Deryon Do Kwan",
-    "timestamp": "2025-11-22T23:25:22.172Z"
-  },
-  {
-    "categoria": "Combate por Puntos",
-    "generoInicial": "Y",
-    "nombreCompleto": "Yael Lopez",
-    "dojo": "Deryon Do Kwan",
-    "timestamp": "2025-11-22T23:25:22.172Z"
-  },
-  {
-    "categoria": "Combate por Puntos",
-    "generoInicial": "U",
-    "nombreCompleto": "Uma Lopez",
     "dojo": "Deryon Do Kwan",
     "timestamp": "2025-11-22T23:25:22.172Z"
   }
