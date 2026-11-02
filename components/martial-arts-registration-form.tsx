@@ -491,11 +491,16 @@ export default function MartialArtsRegistrationForm() {
 
       {/* 3. MODALIDADES DE COMPETENCIA */}
       <div className="chinese-card-straight p-6 sm:p-8 mb-6 shadow-2xl">
-        <div className="flex items-center gap-2 mb-4 pb-2 border-b border-[#D4AF37]/30">
-          <Trophy className="text-[#D4AF37]" size={20} />
-          <h3 className="text-base sm:text-lg font-bold text-[#FFF1B9] font-cinzel tracking-wider uppercase">
-            3. Modalidades de Competencia
-          </h3>
+        <div className="mb-4 pb-2 border-b border-[#D4AF37]/30">
+          <div className="flex items-center gap-2">
+            <Trophy className="text-[#D4AF37] shrink-0" size={20} />
+            <h3 className="text-base sm:text-lg font-bold text-[#FFF1B9] font-cinzel tracking-wider uppercase">
+              3. Modalidades de Competencia
+            </h3>
+          </div>
+          <p className="text-xs text-[#D4AF37] font-montserrat mt-1 ml-7">
+            (Elija en qué categorías participa la persona)
+          </p>
         </div>
 
         {/* Exhibición */}
