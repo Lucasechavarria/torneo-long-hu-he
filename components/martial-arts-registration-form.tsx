@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Plus, User, School, Calendar, Trophy, Trash2, CheckCircle2, ShieldCheck, Loader2, Sparkles, Swords, Sword } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, User, School, Calendar, Trophy, Trash2, CheckCircle2, ShieldCheck, Loader2, Sparkles, Swords, Sword, Target, Scale, Send } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 interface SchoolData {
@@ -38,6 +39,10 @@ interface Participant {
   combateAlPunto: boolean;
   teamCombat: boolean;
   teamForms: boolean;
+  // Categorías Especiales
+  archery: boolean;
+  sumo: boolean;
+  weightKg: string;
 }
 
 export default function MartialArtsRegistrationForm() {
@@ -77,7 +82,10 @@ export default function MartialArtsRegistrationForm() {
     pointFighting: false,
     combateAlPunto: false,
     teamCombat: false,
-    teamForms: false
+    teamForms: false,
+    archery: false,
+    sumo: false,
+    weightKg: ''
   });
 
   const [registeredParticipants, setRegisteredParticipants] = useState<Participant[]>([]);
@@ -123,7 +131,9 @@ export default function MartialArtsRegistrationForm() {
     currentParticipant.forms ||
     currentParticipant.taiChi ||
     currentParticipant.combat ||
-    currentParticipant.teamForms;
+    currentParticipant.teamForms ||
+    currentParticipant.archery ||
+    currentParticipant.sumo;
 
   const addParticipant = () => {
     if (!currentParticipant.name.trim() || !currentParticipant.lastName.trim() || 
@@ -133,12 +143,21 @@ export default function MartialArtsRegistrationForm() {
     }
 
     if (!hasSelectedAnyModalidad) {
-      alert('Debe seleccionar al menos una modalidad de competencia (Exhibición, Formas, Combate o Tai Chi).');
+      alert('Debe seleccionar al menos una modalidad de competencia o categoría especial (Exhibición, Formas, Combate, Tai Chi, Arquería o Sumo).');
       return;
+    }
+
+    if (currentParticipant.sumo) {
+      const parsedWeight = parseFloat(currentParticipant.weightKg.replace(',', '.'));
+      if (!currentParticipant.weightKg.trim() || isNaN(parsedWeight) || parsedWeight <= 0) {
+        alert('Para inscribirse en la categoría especial Sumo, debe ingresar el peso del participante en kilogramos (kg).');
+        return;
+      }
     }
 
     const participantWithCategory: Participant = {
       ...currentParticipant,
+      weightKg: currentParticipant.sumo ? currentParticipant.weightKg.trim() : '',
       age,
       category,
       id: Date.now()
@@ -170,7 +189,10 @@ export default function MartialArtsRegistrationForm() {
       pointFighting: false,
       combateAlPunto: false,
       teamCombat: false,
-      teamForms: false
+      teamForms: false,
+      archery: false,
+      sumo: false,
+      weightKg: ''
     });
   };
 
@@ -229,6 +251,13 @@ export default function MartialArtsRegistrationForm() {
         Combate_por_Equipo: participant.teamCombat ? 'Sí' : (participant.teamForms ? 'Formas Equipo' : 'No'),
         Kickboxing: participant.pointFighting ? 'Point Fighting' : 'No',
         Light_Contact: participant.combateAlPunto ? 'Combate al Punto' : 'No',
+        Arqueria: participant.archery ? 'Sí' : 'No',
+        Sumo: participant.sumo ? 'Sí' : 'No',
+        Peso_Kg: participant.sumo ? `${participant.weightKg} kg` : '',
+        Categorias_Especiales: [
+          participant.archery ? 'Arquería' : '',
+          participant.sumo ? `Sumo (${participant.weightKg} kg)` : ''
+        ].filter(Boolean).join(', ') || 'No',
         Timestamp: timestamp,
         ID_Registro: `${registrationId}_P${index + 1}`
       }));
@@ -587,7 +616,7 @@ export default function MartialArtsRegistrationForm() {
                   onChange={(e) => handleParticipantChange('pointFighting', e.target.checked)}
                   className="accent-[#C8102E]"
                 />
-                Point Fighting (Combate al Punto)
+                Point Fighting
               </label>
 
               <label className="flex items-center gap-2 text-[#FDFDFD] cursor-pointer">
@@ -622,12 +651,12 @@ export default function MartialArtsRegistrationForm() {
               onChange={(e) => handleParticipantChange('taiChi', e.target.checked)}
               className="mr-3 w-4 h-4 rounded-none accent-[#C8102E] cursor-pointer"
             />
-            ☯️ Tai Chi (Estilos tradicionales internos)
+            ☯️ Tai Chi
           </label>
         </div>
 
         {/* Formas en Equipo */}
-        <div className="mb-2">
+        <div className="mb-5 pb-4 border-b border-white/10">
           <label className="flex items-center text-sm font-semibold text-[#FDFDFD] cursor-pointer font-montserrat">
             <input
               type="checkbox"
@@ -638,34 +667,172 @@ export default function MartialArtsRegistrationForm() {
             👥 Formas en Equipo (Sincronización grupal)
           </label>
         </div>
+
+        {/* Categorías Especiales: Arquería y Sumo */}
+        <div className="pt-1">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="text-[#D4AF37]" size={18} />
+              <h4 className="text-sm sm:text-base font-bold text-[#FFF1B9] font-cinzel tracking-wider uppercase">
+                Categorías Especiales
+              </h4>
+            </div>
+            <span className="text-[10px] uppercase tracking-widest px-2.5 py-0.5 bg-[#7A0010]/60 border border-[#D4AF37]/50 text-[#FFF1B9] font-cinzel font-semibold">
+              Especiales 2026
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Arquería */}
+            <div
+              className={`p-4 border transition-all duration-300 ${
+                currentParticipant.archery
+                  ? 'bg-[#7A0010]/30 border-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.2)]'
+                  : 'bg-black/60 border-white/15 hover:border-[#D4AF37]/50'
+              }`}
+            >
+              <label className="flex items-start cursor-pointer font-montserrat">
+                <input
+                  type="checkbox"
+                  checked={currentParticipant.archery}
+                  onChange={(e) => handleParticipantChange('archery', e.target.checked)}
+                  className="mt-0.5 mr-3 w-4 h-4 rounded-none accent-[#C8102E] cursor-pointer shrink-0"
+                />
+                <div>
+                  <span className="text-sm font-bold text-[#FDFDFD] flex items-center gap-1.5">
+                    🏹 Arquería
+                  </span>
+                  <span className="text-xs text-[#FDFDFD]/70 block mt-0.5">
+                    Categoría especial de tiro con arco
+                  </span>
+                </div>
+              </label>
+            </div>
+
+            {/* Sumo */}
+            <div
+              className={`p-4 border transition-all duration-300 ${
+                currentParticipant.sumo
+                  ? 'bg-[#7A0010]/30 border-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.2)]'
+                  : 'bg-black/60 border-white/15 hover:border-[#D4AF37]/50'
+              }`}
+            >
+              <label className="flex items-start cursor-pointer font-montserrat">
+                <input
+                  type="checkbox"
+                  checked={currentParticipant.sumo}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    handleParticipantChange('sumo', checked);
+                    if (!checked) {
+                      handleParticipantChange('weightKg', '');
+                    }
+                  }}
+                  className="mt-0.5 mr-3 w-4 h-4 rounded-none accent-[#C8102E] cursor-pointer shrink-0"
+                />
+                <div className="w-full">
+                  <span className="text-sm font-bold text-[#FDFDFD] flex items-center gap-1.5">
+                    🥋 Sumo
+                  </span>
+                  <span className="text-xs text-[#FDFDFD]/70 block mt-0.5">
+                    Combate de Sumo (requiere indicar peso en kg)
+                  </span>
+                </div>
+              </label>
+
+              <AnimatePresence>
+                {currentParticipant.sumo && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: 'auto', marginTop: 12 }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pt-3 border-t border-[#D4AF37]/30">
+                      <label className="martial-label flex items-center gap-1.5 mb-1.5">
+                        <Scale className="w-3.5 h-3.5 text-[#D4AF37]" />
+                        Peso del Participante (kg) *
+                      </label>
+                      <div className="relative flex items-center">
+                        <input
+                          type="number"
+                          min="10"
+                          max="300"
+                          step="0.1"
+                          value={currentParticipant.weightKg}
+                          onChange={(e) => handleParticipantChange('weightKg', e.target.value)}
+                          placeholder="Ej. 75"
+                          className="martial-input w-full text-sm pr-12"
+                        />
+                        <span className="absolute right-3 text-xs font-bold text-[#D4AF37] font-cinzel pointer-events-none">
+                          KG
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* 4. BOTONES Y LISTA DE PARTICIPANTES */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mb-8">
-        <Button
-          type="button"
-          onClick={addParticipant}
-          className="btn-martial-secondary px-6 py-3 cursor-pointer w-full sm:w-auto"
-        >
-          <Plus size={16} className="mr-2 text-[#D4AF37]" />
-          Agregar Participante a la Lista
-        </Button>
+      {/* 4. BOTONES DE ACCIÓN CON EXPLICACIÓN CLARA */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        {/* Botón 1: Agregar Participante */}
+        <div className="p-4 bg-black/75 border border-[#D4AF37]/40 flex flex-col justify-between gap-2.5">
+          <div className="flex items-center justify-between text-[11px] font-montserrat">
+            <span className="text-[#D4AF37] font-bold uppercase tracking-wider font-cinzel">
+              Paso 1 · Sumar Atletas
+            </span>
+            <span className="text-[#FDFDFD]/60">Uno por uno</span>
+          </div>
+          <Button
+            type="button"
+            onClick={addParticipant}
+            className="btn-martial-secondary px-5 py-3.5 cursor-pointer w-full h-auto whitespace-normal"
+          >
+            <Plus size={16} className="mr-2 text-[#D4AF37] shrink-0" />
+            <span>Agregar Participante a la Lista</span>
+          </Button>
+          <p className="text-[11px] text-[#FDFDFD]/75 font-montserrat text-center leading-snug">
+            Guarda al atleta actual en la lista y limpia los campos para cargar otro.
+          </p>
+        </div>
 
-        <Button
-          type="button"
-          onClick={handleSubmit}
-          disabled={registeredParticipants.length === 0 || isSubmitting}
-          className="btn-martial-primary px-8 py-3 cursor-pointer w-full sm:w-auto disabled:opacity-50"
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Enviando Nómina...
-            </>
-          ) : (
-            `Enviar Inscripción (${registeredParticipants.length} Atleta${registeredParticipants.length !== 1 ? 's' : ''})`
-          )}
-        </Button>
+        {/* Botón 2: Enviar Lista Completa */}
+        <div className="p-4 bg-black/75 border border-[#C8102E]/60 flex flex-col justify-between gap-2.5">
+          <div className="flex items-center justify-between text-[11px] font-montserrat">
+            <span className="text-[#FFF1B9] font-bold uppercase tracking-wider font-cinzel">
+              Paso 2 · Confirmar Todo
+            </span>
+            <span className="text-[#D4AF37] font-semibold">
+              {registeredParticipants.length} en lista
+            </span>
+          </div>
+          <Button
+            type="button"
+            onClick={handleSubmit}
+            disabled={registeredParticipants.length === 0 || isSubmitting}
+            className="btn-martial-primary px-5 py-3.5 cursor-pointer w-full h-auto whitespace-normal disabled:opacity-50"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin shrink-0" />
+                <span>Enviando Lista Completa...</span>
+              </>
+            ) : (
+              <>
+                <Send size={15} className="mr-2 text-[#FFF1B9] shrink-0" />
+                <span>Enviar Lista Completa ({registeredParticipants.length} Atleta{registeredParticipants.length !== 1 ? 's' : ''})</span>
+              </>
+            )}
+          </Button>
+          <p className="text-[11px] text-[#FDFDFD]/75 font-montserrat text-center leading-snug">
+            Presione al finalizar para enviar la nómina completa de su escuela.
+          </p>
+        </div>
       </div>
 
       {/* LISTA COMPACTA DE PARTICIPANTES REGISTRADOS */}
@@ -694,6 +861,8 @@ export default function MartialArtsRegistrationForm() {
                     {(p.pointFighting || p.combateAlPunto || p.teamCombat) && <span className="bg-[#C8102E]/30 border border-[#C8102E]/50 px-1.5 py-0.5 rounded-none">🥊 Combate</span>}
                     {p.taiChi && <span className="bg-[#D4AF37]/20 border border-[#D4AF37]/40 px-1.5 py-0.5 rounded-none">☯️ Tai Chi</span>}
                     {p.teamForms && <span className="bg-[#D4AF37]/20 border border-[#D4AF37]/40 px-1.5 py-0.5 rounded-none">👥 Formas Eq.</span>}
+                    {p.archery && <span className="bg-[#C8102E]/30 border border-[#D4AF37]/60 text-[#FFF1B9] px-1.5 py-0.5 rounded-none">🏹 Arquería</span>}
+                    {p.sumo && <span className="bg-[#C8102E]/30 border border-[#D4AF37]/60 text-[#FFF1B9] px-1.5 py-0.5 rounded-none">🥋 Sumo ({p.weightKg} kg)</span>}
                   </div>
                 </div>
 
