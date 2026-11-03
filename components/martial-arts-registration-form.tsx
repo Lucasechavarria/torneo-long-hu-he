@@ -468,20 +468,20 @@ export default function MartialArtsRegistrationForm() {
               className="martial-input w-full text-sm"
             >
               <option value="" className="bg-black text-[#FDFDFD]">Seleccione un grado</option>
-              <option value="Kyu A" className="bg-black text-[#FDFDFD]">Kyu A</option>
-              <option value="Kyu B" className="bg-black text-[#FDFDFD]">Kyu B</option>
-              <option value="Dan" className="bg-black text-[#FDFDFD]">Dan</option>
+              <option value="Kyu A" className="bg-black text-[#FDFDFD]">Kyu A / Fu A / Principiante</option>
+              <option value="Kyu B" className="bg-black text-[#FDFDFD]">Kyu B / Fu B / Intermedio</option>
+              <option value="Dan" className="bg-black text-[#FDFDFD]">Dan / Thuan / Avanzado</option>
             </select>
           </div>
 
           {currentParticipant.grade === 'Dan' && (
             <div>
-              <label className="martial-label block mb-1">Grado Específico (ej. 1º Dan)</label>
+              <label className="martial-label block mb-1">Grado Específico (ej. 1° Dan / Thuan)</label>
               <input
                 type="text"
                 value={currentParticipant.specificGrade}
                 onChange={(e) => handleParticipantChange('specificGrade', e.target.value)}
-                placeholder="1º Dan, 2º Dan, etc."
+                placeholder="1° Dan / Thuan, 2° Dan / Thuan, etc."
                 className="martial-input w-full text-sm"
               />
             </div>
