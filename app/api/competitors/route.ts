@@ -57,7 +57,8 @@ export async function GET() {
     if (response.ok) {
       const data = await response.json();
 
-      if (Array.isArray(data) && data.length > 0) {
+      // Una lista vacía es una respuesta válida (ej. inicio de inscripciones 2026)
+      if (Array.isArray(data)) {
         memoryCache = data;
         lastFetchTime = now;
 
