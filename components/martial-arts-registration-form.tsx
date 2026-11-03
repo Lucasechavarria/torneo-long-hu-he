@@ -258,7 +258,7 @@ export default function MartialArtsRegistrationForm() {
         ID_Registro: `${registrationId}_P${index + 1}`
       }));
 
-      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxm1L1nDRVdCdFensbyxAbKS-wsd-URhaH4Jes0j5wb-hAURd0cSY2TA3Oi7cljyEH7bg/exec';
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzO9mVCwld76BngT5RhtxkueOn-Wo6eSwbVo7EyAy6FQrADx357iyqoMxxUFj52LcARw/exec';
 
       try {
         await fetch(GOOGLE_SCRIPT_URL, {
